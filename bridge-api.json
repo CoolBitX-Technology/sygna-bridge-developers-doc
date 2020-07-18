@@ -296,7 +296,7 @@
     },
     "/bridge/transaction/permission-request": {
       "post": {
-        "description": "The first step of the permission request flow. Should be called by the originator VASP to inform Sygna Bridge about the creation of a compliant transaction.\n\n\n![](https://i.imgur.com/rNzTHD4.png)",
+        "description": "The first step of the permission request flow. Should be called by the originator VASP to inform Sygna Bridge about the creation of a compliant transaction.\n\n\n![](https://i.imgur.com/7yUGbBs.png)",
         "summary": "Bridge/PermissionRequest",
         "tags": [
           "Bridge"
@@ -391,7 +391,7 @@
     },
     "/bridge/transaction/permission": {
       "post": {
-        "description": "This request works as a response to Bridge's [Permission Request](ref:bridgepermissionrequest-3). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/yECHJqV.png)",
+        "description": "This request works as a response to Bridge's [Permission Request](ref:bridgepermissionrequest-3). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/sqSGnEh.png)",
         "summary": "Bridge/Permission",
         "tags": [
           "Bridge"
@@ -601,7 +601,7 @@
     },
     "/beneficiary/transaction/permission-request": {
       "post": {
-        "description": "![](https://i.imgur.com/hTU5qyn.png)\n\nWhen Bridge gets a [**Permission Request**](ref:permission-request), it will verify the request first to ensure the data integrity, and then **Relay the request to corresponding beneficiary server**.",
+        "description": "![](https://i.imgur.com/8tk64jV.png)\n\nWhen Bridge gets a [**Permission Request**](ref:permission-request), it will verify the request first to ensure the data integrity, and then **Relay the request to corresponding beneficiary server**.",
         "summary": "Beneficiary/PermissionRequest",
         "tags": [
           "VASP API"
@@ -733,7 +733,7 @@
     },
     "/originator/transaction/permission": {
       "post": {
-        "description": "![](https://i.imgur.com/6AFWgIm.png)\n\nEach VASP needs to implement a permission endpoint to get a notification from bridge\n\nWhen an originator posts a permission request to Bridge, it needs to attach this url in callback_url.",
+        "description": "![](https://i.imgur.com/5pqJSm9.png)\n\nEach VASP needs to implement a permission endpoint to get a notification from bridge\n\nWhen an originator posts a permission request to Bridge, it needs to attach this url in callback_url.",
         "summary": "Originator/Permission",
         "tags": [
           "VASP API"
