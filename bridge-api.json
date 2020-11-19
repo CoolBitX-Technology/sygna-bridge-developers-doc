@@ -874,8 +874,8 @@
         ],
         "additionalProperties": false
       },
-      "bridgeCurrencyItem": {
-        "title": "CurrencyItem",
+      "bridgeSupportedCoins": {
+        "title": "supported_coins",
         "type": "object",
         "properties": {
           "currency_id": {
@@ -905,21 +905,6 @@
           "addr_extra_info"
         ],
         "additionalProperties": false
-      },
-      "bridgeSupportedCoins": {
-        "title": "supported_coins",
-        "type": "object",
-        "properties": {
-          "supported_coins": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/bridgeCurrencyItem"
-            }
-          }
-        },
-        "required": [
-          "supported_coins"
-        ]
       },
       "bridgePrivateInfo": {
         "title": "private_info",
