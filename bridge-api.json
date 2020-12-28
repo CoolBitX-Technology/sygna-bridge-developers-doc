@@ -14,10 +14,6 @@
     {
       "url": "https://{VASP-server}/v2",
       "description": "VASP Sandbox server"
-    },
-    {
-      "url": "https://dev-api.sygna.io/v2",
-      "description": ""
     }
   ],
   "paths": {
