@@ -1489,8 +1489,8 @@
           },
           "addrs":{
             "type":"array",
-            "items":{
-            "$ref": "#/components/schemas/bridgeAddress"
+            "items": {
+              "type": "string"
             }
           }
         },
@@ -1541,7 +1541,7 @@
             "type": "string"
           },
           "usd_worth":{
-            "type":"integer"
+            "type":"number"
           }
         }
       }
