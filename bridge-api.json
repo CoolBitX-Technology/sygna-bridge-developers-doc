@@ -1529,7 +1529,7 @@
         "type": "object",
         "properties": {
           "risk_score":{
-            "type":"integer"
+            "type":"number"
           },
           "asset":{
             "type":"string"
