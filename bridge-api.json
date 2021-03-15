@@ -1085,7 +1085,8 @@
         "type": "object",
         "properties": {
           "address": {
-            "type": "string"
+            "type": "string",
+            "minItems": 1
           },
           "addr_extra_info": {
             "type": "array",
