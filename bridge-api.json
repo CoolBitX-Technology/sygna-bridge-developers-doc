@@ -562,14 +562,14 @@
         }
       }
     },
-    "/bridge/kyt": {
+    "/bridge/wallet-address-filter": {
       "post": {
         "description": "To identify the specific wallet address that belongs to a VASP or an un-hosted wallet. A transacting risk score of the wallet address will be returned if the wallet address belongs to an un-hosted wallet by your selected blockchain analytics vendor. If you have not collaborated with any blockchain analytics vendor, please contact services@sygna.io.",
-        "summary": "Bridge/KYT",
+        "summary": "Bridge/Wallet Address Filter",
         "tags": [
           "Bridge"
         ],
-        "operationId": "Bridge/kyt",
+        "operationId": "Bridge/wallet-address-filter",
         "security": [
           {
             "ApiKeyAuth": []
@@ -580,7 +580,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bridgeKyt"
+                "$ref": "#/components/schemas/bridgeWalletAddressFilter"
               },
               "example": {
                 "currency_id": "sygna:0x80000000",
@@ -601,7 +601,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridgeKytRes"
+                  "$ref": "#/components/schemas/bridgeWalletAddressFilterRes"
                 },
                 "example": [
                   {
@@ -1502,9 +1502,9 @@
           "status"
         ]
       },
-      "bridgeKyt": {
-        "title": "KYT",
-        "description": "Know-Your-Customer",
+      "bridgeWalletAddressFilter": {
+        "title": "WalletAddressFilter",
+        "description": "Wallet Address Filter",
         "type": "object",
         "properties": {
           "currency_id": {
@@ -1522,9 +1522,9 @@
           "addrs"
         ]
       },
-      "bridgeKytRes": {
-        "title": "KYTResponse",
-        "description": "the response of Kyt Api",
+      "bridgeWalletAddressFilterRes": {
+        "title": "WalletAddressFilterResponse",
+        "description": "the response of WalletAddressFilter Api",
         "type": "object",
         "properties": {
           "type": {
@@ -1537,7 +1537,7 @@
             "type": "string"
           },
           "extra_data": {
-            "$ref": "#/components/schemas/KytExtraData"
+            "$ref": "#/components/schemas/WalletAddressFilterExtraData"
           }
         },
         "required": [
@@ -1546,8 +1546,8 @@
           "currency_id"
         ]
       },
-      "KytExtraData": {
-        "title": "KYTExtraData",
+      "WalletAddressFilterExtraData": {
+        "title": "WalletAddressFilterExtraData",
         "description": "",
         "type": "object",
         "properties": {
