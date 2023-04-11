@@ -1345,6 +1345,12 @@
           "amount": {
             "type": "string",
             "minLength": 1
+          },
+          "txid": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "x8criwur71vzq"
+            }
           }
         },
         "required": [
