@@ -1350,7 +1350,9 @@
             "type": "string",
             "x-stoplight": {
               "id": "x8criwur71vzq"
-            }
+            },
+            "pattern": "^[0123456789A-Za-z]+$",
+            "minLength": 1
           }
         },
         "required": [
