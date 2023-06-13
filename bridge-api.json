@@ -1431,6 +1431,7 @@
               "BVRC005",
               "BVRC006",
               "BVRC007",
+              "BVRC008",
               "BVRC999",
               null
             ]
@@ -1540,6 +1541,7 @@
           "BVRC005",
           "BVRC006",
           "BVRC007",
+          "BVRC008",
           "BVRC999"
         ]
       },
