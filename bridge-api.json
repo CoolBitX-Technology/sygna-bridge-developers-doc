@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "2.0",
-    "title": "Bridge API",
-    "description": "",
+    "title": "Sygna Bridge API",
+    "description": "Only for Sygna Bridge VASPs. For Sygna Hub VASPs, please refer to https://github.com/CoolBitX-Technology/sygna-hub-api-doc",
     "contact": {}
   },
   "servers": [
@@ -397,11 +397,158 @@
               }
             }
           },
+          "400": {
+            "description": "Incorrect column (eg. \"tag\" ➝ \"Tag\") when hitting the API with the currency type having extra_info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 400,
+                      "err_code": "010364",
+                      "err_message": "The addr_extra_info of sygna:0x80000090 is [\"tag\"], but the following address have invalid addr_extra_info : {\"1BYJxAZNVcSeSbtKCHRXxokX31yjWaZczb\":[\"Tag\"]}",
+                      "err_code_stacks": [
+                        "010202",
+                        "010364"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 400,
+                      "err_code": "010364",
+                      "err_message": "The addr_extra_info of sygna:0x80000090 is [\"tag\"], but the following address have invalid addr_extra_info : {\"1BYJxAZNVcSeSbtKCHRXxokX31yjWaZczb\":[\"Tag\"]}",
+                      "err_code_stacks": [
+                        "010202",
+                        "010364"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
           "403": {
-            "description": "Forbidden"
+            "description": "Use an incorrenct private key to sign the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 403,
+                      "err_code": "010205",
+                      "err_message": "Verify originator's data signature failed.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010205"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 403,
+                      "err_code": "010205",
+                      "err_message": "Verify originator's data signature failed.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010205"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Input a \"Not supported currency_id\" in the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 404,
+                      "err_code": "010362",
+                      "err_message": "The currency_id(sygna:0x???) is not supported by Sygna Bridge.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010362"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 404,
+                      "err_code": "010362",
+                      "err_message": "The currency_id(sygna:0x???) is not supported by Sygna Bridge.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010362"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1011,25 +1158,30 @@
         "title": "CallbackUrl",
         "type": "object",
         "minProperties": 3,
+        "additionalProperties": false,
         "properties": {
           "vasp_code": {
             "$ref": "#/components/schemas/bridgeVaspCode"
           },
           "callback_permission_request_url": {
             "type": "string",
-            "format": "url"
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/callbacks/permission-request"
           },
           "callback_txid_url": {
             "type": "string",
-            "format": "url"
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/callbacks/txid"
           },
           "callback_validate_addr_url": {
             "type": "string",
-            "format": "url"
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/callbacks/address-validation"
           },
           "callback_vasp_server_health_check_url": {
             "type": "string",
-            "format": "url"
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/vasp-server-status"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -1038,8 +1190,7 @@
         "required": [
           "vasp_code",
           "signature"
-        ],
-        "additionalProperties": false
+        ]
       },
       "bridgeCurrencyItem": {
         "title": "CurrencyItem",
@@ -1194,6 +1345,14 @@
           "amount": {
             "type": "string",
             "minLength": 1
+          },
+          "txid": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "x8criwur71vzq"
+            },
+            "pattern": "^[0123456789A-Za-z]+$",
+            "minLength": 1
           }
         },
         "required": [
@@ -1272,6 +1431,7 @@
               "BVRC005",
               "BVRC006",
               "BVRC007",
+              "BVRC008",
               "BVRC999",
               null
             ]
@@ -1322,6 +1482,7 @@
       "bridgePermissionRequestData": {
         "title": "PermissionRequestData",
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "private_info": {
             "$ref": "#/components/schemas/bridgePrivateInfo"
@@ -1341,7 +1502,7 @@
           },
           "forced_sending_when_VASP_is_not_healthy": {
             "type": "boolean",
-            "description": "check vasp status or not"
+            "description": "True: Forced sending data transfers even counterparty VASP server status is NOT healthy.\nThe data transfer will still be successfully sent out by oVASP to the Sygna server.\n\nFalse: Do not force sending data transfers when the counterparty VASP server status is NOT healthy.\nThe data transfer will not be sent out. The oVASP needs to resend the data transfer manually."
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -1352,8 +1513,7 @@
           "transaction",
           "data_dt",
           "signature"
-        ],
-        "additionalProperties": false
+        ]
       },
       "bridgePermissionRequest": {
         "title": "PermissionRequest",
@@ -1381,6 +1541,7 @@
           "BVRC005",
           "BVRC006",
           "BVRC007",
+          "BVRC008",
           "BVRC999"
         ]
       },
