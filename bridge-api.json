@@ -1183,6 +1183,11 @@
             "format": "url",
             "description": "#Example: https://<domain>/v1/vasp-server-status"
           },
+          "callback_host_url": {
+            "type": "string",
+            "format": "url",
+            "description": "#Example: https://<domain>"
+          },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
           }
