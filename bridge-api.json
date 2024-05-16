@@ -1206,7 +1206,8 @@
               }
             }
           }
-        ]
+        ],
+        "additionalProperties": false
       },
       "bridgeVaspCode": {
         "title": "vasp_code",
