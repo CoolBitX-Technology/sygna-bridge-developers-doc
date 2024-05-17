@@ -1180,32 +1180,77 @@
       },
       "bridgeVaspDetailData": {
         "title": "vasp_detail_data",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/bridgeVaspData"
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "$ref": "#/components/schemas/bridgeVaspCode"
           },
-          {
-            "type": "object",
-            "properties": {
-              "vasp_hub_version": {
-                "type": "string"
-              },
-              "supported_ivms_version": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "legacy",
-                    "101",
-                    "101.2023"
-                  ]
-                }
-              },
-              "national_identifier": {
-                "type": "string"
-              }
+          "vasp_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "vasp_pubkey": {
+            "type": "string",
+            "minLength": 130
+          },
+          "vaspOtherName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "supervisoryAuthority": {
+            "type": "string",
+            "minLength": 1
+          },
+          "countryCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "licenseRegistrationId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "regulatoryStatus": {
+            "type": "string",
+            "minLength": 1
+          },
+          "vasp_server_status": {
+            "type": "string",
+            "enum": [
+              "healthy",
+              "unhealthy",
+              "unknown"
+            ]
+          },
+          "last_server_checked_at": {
+            "$ref": "#/components/schemas/bridgeDate"
+          },
+          "vasp_sygna_registration_type": {
+            "type": "string"
+          },
+          "vasp_hub_version": {
+            "type": "string"
+          },
+          "supported_ivms_version": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "legacy",
+                "101",
+                "101.2023"
+              ]
             }
+          },
+          "national_identifier": {
+            "type": "string"
           }
+        },
+        "required": [
+          "vasp_code",
+          "vasp_name",
+          "vasp_pubkey",
+          "regulatoryStatus",
+          "vasp_sygna_registration_type"
         ],
         "additionalProperties": false
       },
