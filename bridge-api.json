@@ -1134,6 +1134,10 @@
             "type": "string",
             "minLength": 130
           },
+          "vasp_ed25519_pubkey": {
+            "type": "string",
+            "minLength": 1
+          },
           "vaspOtherName": {
             "type": "string",
             "minLength": 1
