@@ -80,6 +80,60 @@
         }
       }
     },
+    "/bridge/vasp/detail/{vaspCode}": {
+      "get": {
+        "description": "Retrieve detail information of the specific Virtual Assets Service Provider.  \nThe signature in Response is from Sygna Bridge, and it can be verified by the Bridge public key.  \nVASPs can get Bridge's public key from their own registration email.",
+        "summary": "Bridge/VASPDetail",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/VASPDetail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaspCode",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The vaspCode is used to retrieve the detail information of the VASP."
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "responses": {
+          "200": {
+            "description": "An object containing detail information of the specific VASP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeVaspDetail"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "vasp_data": [
+                        {
+                          "vasp_code": "VASPJPJT4",
+                          "vasp_name": "VASP4 in Tokyo, Japan",
+                          "vasp_pubkey": "04670af26edc74b1ae4e4acb6cef65dc0c3914528296aa48a6412f00cf0576d735d99e7cdd9da3daaef6fded244553597be9272d6cd2065a52cc7157264a2a4836"
+                        }
+                      ],
+                      "signature": "9fb61c13dc4f74a18413aca7179cd62ad22aa88ea67fe4e9ff6fa5e6ddf5d2706d175d8965c3eadf0c1370b52a2ab211697b520633c74d00d2bfb120e610dae6",
+                      "timestamp": 1584002280274
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bridge/vasp/beneficiary-endpoint-url": {
       "post": {
         "description": "This API allows requesting VASPs to update the self's callback URL programmatically, and at least one of the URLs must be specified in the request body.  \nThe requesting VASP needs to sign the body parameters with its private key to generate the signature in this API.",
@@ -1169,6 +1223,82 @@
         ],
         "additionalProperties": false
       },
+      "bridgeVaspDetailData": {
+        "title": "vasp_detail_data",
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "$ref": "#/components/schemas/bridgeVaspCode"
+          },
+          "vasp_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "vasp_pubkey": {
+            "type": "string",
+            "minLength": 130
+          },
+          "vaspOtherName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "supervisoryAuthority": {
+            "type": "string",
+            "minLength": 1
+          },
+          "countryCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "licenseRegistrationId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "regulatoryStatus": {
+            "type": "string",
+            "minLength": 1
+          },
+          "vasp_server_status": {
+            "type": "string",
+            "enum": [
+              "healthy",
+              "unhealthy",
+              "unknown"
+            ]
+          },
+          "last_server_checked_at": {
+            "$ref": "#/components/schemas/bridgeDate"
+          },
+          "vasp_sygna_registration_type": {
+            "type": "string"
+          },
+          "vasp_hub_version": {
+            "type": "string"
+          },
+          "supported_ivms_version": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "legacy",
+                "101",
+                "101.2023"
+              ]
+            }
+          },
+          "national_identifier": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "vasp_code",
+          "vasp_name",
+          "vasp_pubkey",
+          "regulatoryStatus",
+          "vasp_sygna_registration_type"
+        ],
+        "additionalProperties": false
+      },
       "bridgeVaspCode": {
         "title": "vasp_code",
         "type": "string",
@@ -1183,6 +1313,28 @@
             "items": {
               "$ref": "#/components/schemas/bridgeVaspData"
             }
+          },
+          "timestamp": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "vasp_data",
+          "timestamp",
+          "signature"
+        ],
+        "additionalProperties": false
+      },
+      "bridgeVaspDetail": {
+        "title": "VaspDetail",
+        "type": "object",
+        "properties": {
+          "vasp_data": {
+            "$ref": "#/components/schemas/bridgeVaspDetailData"
           },
           "timestamp": {
             "type": "integer",
