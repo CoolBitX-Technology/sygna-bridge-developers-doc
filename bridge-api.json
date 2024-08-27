@@ -1214,6 +1214,17 @@
           },
           "vasp_sygna_registration_type": {
             "type": "string"
+          },
+          "maintenance_date_range": {
+            "type": "object",
+            "properties": {
+              "started_at": {
+                "type": "number"
+              },
+              "ended_at": {
+                "type": "number"
+              }
+            }
           }
         },
         "required": [
