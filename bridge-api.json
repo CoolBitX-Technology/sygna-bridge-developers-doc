@@ -202,8 +202,8 @@
               "example": {
                 "vasp_code": "VASPUSNY1",
                 "status": "maintaining",
-                "started_at": 1625097600,
-                "ended_at": 1625184000,
+                "started_at": 1724807400000,
+                "ended_at": 1724808400000,
                 "signature": "d58e5b71b8d5c9a7e1e0c89936f9f610b24219a4a8be4d3c42ec4f64747fc01f"
               }
             }
