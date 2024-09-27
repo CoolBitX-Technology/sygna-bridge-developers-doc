@@ -1572,6 +1572,7 @@
             "x-stoplight": {
               "id": "x8criwur71vzq"
             },
+            "pattern": "^[^&<>]+$",
             "minLength": 1
           }
         },
@@ -1860,7 +1861,8 @@
           },
           "txid": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "^[^&<>]+$"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
