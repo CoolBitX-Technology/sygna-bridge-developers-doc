@@ -179,6 +179,58 @@
         }
       }
     },
+    "/bridge/vasp/server-status": {
+      "post": {
+        "description": "This API is used to declare that the VASP’s server is currently in maintenance.",
+        "summary": "Bridge/VASP/ServerStatus",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/ServerStatus",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeServerStatus"
+              },
+              "example": {
+                "vasp_code": "VASPUSNY1",
+                "status": "maintaining",
+                "started_at": 1724807400000,
+                "ended_at": 1724808400000,
+                "signature": "d58e5b71b8d5c9a7e1e0c89936f9f610b24219a4a8be4d3c42ec4f64747fc01f"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bridge/transaction/currencies": {
       "get": {
         "summary": "Bridge/Currencies",
@@ -1199,19 +1251,25 @@
             "type": "string",
             "minLength": 1
           },
-          "vasp_server_status": {
-            "type": "string",
-            "enum": [
-              "healthy",
-              "unhealthy",
-              "unknown"
-            ]
+          "vasp_server_status":{
+            "$ref": "#/components/schemas/vaspServerStatus"
           },
           "last_server_checked_at": {
             "$ref": "#/components/schemas/bridgeDate"
           },
           "vasp_sygna_registration_type": {
             "type": "string"
+          },
+          "maintenance_date_range": {
+            "type": "object",
+            "properties": {
+              "started_at": {
+                "type": "number"
+              },
+              "ended_at": {
+                "type": "number"
+              }
+            }
           }
         },
         "required": [
@@ -1258,13 +1316,8 @@
             "type": "string",
             "minLength": 1
           },
-          "vasp_server_status": {
-            "type": "string",
-            "enum": [
-              "healthy",
-              "unhealthy",
-              "unknown"
-            ]
+          "vasp_server_status":{
+            "$ref": "#/components/schemas/vaspServerStatus"
           },
           "last_server_checked_at": {
             "$ref": "#/components/schemas/bridgeDate"
@@ -1288,6 +1341,17 @@
           },
           "national_identifier": {
             "type": "string"
+          },
+          "maintenance_date_range": {
+            "type": "object",
+            "properties": {
+              "started_at": {
+                "type": "string"
+              },
+              "ended_at": {
+                "type": "string"
+              }
+            }
           }
         },
         "required": [
@@ -1553,7 +1617,7 @@
             "x-stoplight": {
               "id": "x8criwur71vzq"
             },
-            "pattern": "^[0123456789A-Za-z]+$",
+            "pattern": "^[^&<>]+$",
             "minLength": 1
           }
         },
@@ -1843,8 +1907,7 @@
           "txid": {
             "type": "string",
             "minLength": 1,
-            "pattern": "^[0123456789A-Za-z]+$",
-            "description": "(After the new version 1.22.0 est. May 2023) Allow Sygna Bridge VASP to send txid (=transaction ID =transaction hash) at the first place by hitting <POST /permission-request> and at any point by hitting <POST /txid> during the data transfer."
+            "pattern": "^[^&<>]+$"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -2044,6 +2107,39 @@
             "minItems": 1
           }
         }
+      },
+      "bridgeServerStatus": {
+        "title": "ServerStatus",
+        "description": "Server Status",
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "$ref": "#/components/schemas/bridgeVaspCode"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["maintaining"]
+          },
+          "started_at": {
+            "type": "number"
+          },
+          "ended_at": {
+            "type": "number"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": ["vasp_code", "status", "signature"]
+      },
+      "vaspServerStatus": {
+        "type": "string",
+        "enum": [
+          "healthy",
+          "unhealthy",
+          "unknown",
+          "maintaining"
+        ]
       }
     }
   }
