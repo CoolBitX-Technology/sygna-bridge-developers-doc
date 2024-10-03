@@ -134,6 +134,70 @@
         }
       }
     },
+    "/bridge/vasp/usage": {
+      "get": {
+        "description": "This API retrieves the total number of data transfer requests initiated within a specified time range. You can filter the results by providing a start_at and end_at timestamp. Please note that the timestamps is in UTC (UTC+0) and in milliseconds.",
+        "summary": "Bridge/VASPUsage",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/VASPUsage",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start_at",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "end_at",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "responses": {
+          "200": {
+            "description": "An object containing detail information of the total number of data transfer requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeVaspUsage"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "data": [
+                        {
+                          "vasp_code": "VASPJPJT4",
+                          "created_at": "2024-08-01",
+                          "total": "1",
+                          "accepted": "1",
+                          "rejected": "0",
+                          "null_count": "0"
+                        }
+                      ],
+                      "signature": "9fb61c13dc4f74a18413aca7179cd62ad22aa88ea67fe4e9ff6fa5e6ddf5d2706d175d8965c3eadf0c1370b52a2ab211697b520633c74d00d2bfb120e610dae6",
+                      "timestamp": 1584002280274
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bridge/vasp/beneficiary-endpoint-url": {
       "post": {
         "description": "This API allows requesting VASPs to update the self's callback URL programmatically, and at least one of the URLs must be specified in the request body.  \nThe requesting VASP needs to sign the body parameters with its private key to generate the signature in this API.",
@@ -2141,6 +2205,60 @@
           "maintaining"
         ]
       }
+    },
+    "bridgeVaspUsage": {
+        "title": "VaspUsage",
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/bridgeVaspUsageData"
+          },
+          "timestamp": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "data",
+          "timestamp",
+          "signature"
+        ],
+        "additionalProperties": false
+      },
+    "bridgeVaspUsageData": {
+      "title": "VaspUsageData",
+      "type": "object",
+      "properties": {
+        "vasp_code": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "total": {
+          "type": "number"
+        },
+        "accepted": {
+          "type": "number"
+        },
+        "rejected": {
+          "type": "number"
+        },
+        "null_count": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "vasp_code",
+        "created_at",
+        "total",
+        "accepted",
+        "rejected",
+        "null_count"
+      ]
     }
   }
 }
