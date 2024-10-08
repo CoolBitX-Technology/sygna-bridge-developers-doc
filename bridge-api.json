@@ -2229,25 +2229,28 @@
       },
       "bridgeVaspUsageData": {
         "title": "VaspUsageData",
-        "type": "object",
-        "properties": {
-          "vasp_code": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "vasp_code": {
             "type": "string"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "total": {
-            "type": "number"
-          },
-          "accepted": {
-            "type": "number"
-          },
-          "rejected": {
-            "type": "number"
-          },
-          "null_count": {
-            "type": "number"
+            },
+            "created_at": {
+              "type": "string"
+            },
+            "total": {
+              "type": "number"
+            },
+            "accepted": {
+              "type": "number"
+            },
+            "rejected": {
+              "type": "number"
+            },
+            "null_count": {
+              "type": "number"
+            }
           }
         }
       }
