@@ -2234,22 +2234,22 @@
           "type": "object",
           "properties": {
             "vasp_code": {
-            "type": "string"
+              "type": "string"
             },
             "created_at": {
               "type": "string"
             },
             "total": {
-              "type": "number"
+              "type": ["number", "null"]
             },
             "accepted": {
-              "type": "number"
+              "type": ["number", "null"]
             },
             "rejected": {
-              "type": "number"
+              "type": ["number", "null"]
             },
             "null_count": {
-              "type": "number"
+              "type": ["number", "null"]
             }
           }
         }
