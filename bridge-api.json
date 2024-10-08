@@ -2204,9 +2204,8 @@
           "unknown",
           "maintaining"
         ]
-      }
-    },
-    "bridgeVaspUsage": {
+      },
+      "bridgeVaspUsage": {
         "title": "VaspUsage",
         "type": "object",
         "properties": {
@@ -2228,37 +2227,30 @@
         ],
         "additionalProperties": false
       },
-    "bridgeVaspUsageData": {
-      "title": "VaspUsageData",
-      "type": "object",
-      "properties": {
-        "vasp_code": {
-          "type": "string"
-        },
-        "created_at": {
-          "type": "string"
-        },
-        "total": {
-          "type": "number"
-        },
-        "accepted": {
-          "type": "number"
-        },
-        "rejected": {
-          "type": "number"
-        },
-        "null_count": {
-          "type": "number"
+      "bridgeVaspUsageData": {
+        "title": "VaspUsageData",
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number"
+          },
+          "accepted": {
+            "type": "number"
+          },
+          "rejected": {
+            "type": "number"
+          },
+          "null_count": {
+            "type": "number"
+          }
         }
-      },
-      "required": [
-        "vasp_code",
-        "created_at",
-        "total",
-        "accepted",
-        "rejected",
-        "null_count"
-      ]
+      }
     }
   }
 }
