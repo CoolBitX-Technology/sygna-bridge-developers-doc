@@ -1599,6 +1599,11 @@
         "type": "string",
         "description": "ECIES encoded [Private Information](ref:private-information)"
       },
+      "bridgeOtherCddInfo": {
+        "title": "other_cdd_info",
+        "type": "string",
+        "description": "ECIES encoded [Other CDD Information]"
+      },
       "bridgeAddress": {
         "title": "addrs",
         "type": "object",
@@ -1834,6 +1839,9 @@
           "forced_sending_when_VASP_is_not_healthy": {
             "type": "boolean",
             "description": "True: Forced sending data transfers even counterparty VASP server status is NOT healthy.\nThe data transfer will still be successfully sent out by oVASP to the Sygna server.\n\nFalse: Do not force sending data transfers when the counterparty VASP server status is NOT healthy.\nThe data transfer will not be sent out. The oVASP needs to resend the data transfer manually."
+          },
+          "other_cdd_info": {
+            "$ref": "#/components/schemas/bridgeOtherCddInfo"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
