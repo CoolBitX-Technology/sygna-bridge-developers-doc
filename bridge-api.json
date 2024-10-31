@@ -619,7 +619,7 @@
             }
           },
           "403": {
-            "description": "Use an incorrenct private key to sign the API request body.",
+            "description": "Use an incorrect private key to sign the API request body.",
             "content": {
               "application/json": {
                 "schema": {
@@ -714,6 +714,129 @@
                         "010202",
                         "010362"
                       ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bridge/transaction/cdd-request": {
+      "post": {
+        "description": "This API can be used to request enhanced Customer Due Diligence (CDD) information from the originating VASP.",
+        "summary": "Bridge/CDDRequest",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/CDDRequest",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCDDRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Use an incorrect private key to sign the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 403,
+                      "err_code": "010207",
+                      "err_message": "Verify beneficiary's data signature failed.",
+                      "err_code_stacks": [
+                        "010226",
+                        "010207"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 403,
+                      "err_code": "010207",
+                      "err_message": "Verify beneficiary's data signature failed.",
+                      "err_code_stacks": [
+                        "010226",
+                        "010207"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The counterparty VASP has not configured the callback endpoint for this feature.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -1493,6 +1616,12 @@
             "format": "url",
             "description": "#Example: https://<domain>/v1/callbacks/permission-request"
           },
+          "callback_cdd_url": {
+            "type": "string",
+            "format": "url",
+            "description": "This parameter is used when the originating VASP receives the request of enhanced Customer Due Diligence (CDD) information from the beneficiary VASP, or when the beneficiary VASP receives the reverted CDD information from the originating VASP.",
+            "example": "https://<domain>/v1/callbacks/cdd"
+          },
           "callback_txid_url": {
             "type": "string",
             "format": "url",
@@ -1863,6 +1992,88 @@
           },
           "callback": {
             "$ref": "#/components/schemas/bridgeCallback"
+          }
+        },
+        "additionalProperties": false
+      },
+      "bridgeCDDRequest": {
+        "title": "CDD Request",
+        "type": "object",
+        "properties": {
+          "transfer_id": {
+            "$ref": "#/components/schemas/bridgeTransferID"
+          },
+          "request_cdd_data": {
+            "$ref": "#/components/schemas/bridgeRequestCddData"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "transfer_id",
+          "signature"
+        ],
+        "additionalProperties": false
+      },
+      "bridgeRequestCddData": {
+        "title": "Request CDD Data",
+        "type": "object",
+        "properties": {
+          "geographic_address": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "address_line",
+                "address_type",
+                "building_name",
+                "building_number",
+                "country",
+                "country_sub_division",
+                "department",
+                "district_name",
+                "floor",
+                "post_box",
+                "post_code",
+                "room",
+                "street_name",
+                "sub_department",
+                "town_location_name",
+                "town_name"
+              ]
+            }
+          },
+          "national_identification": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "country_of_issue",
+                "national_identifier",
+                "national_identifier_type",
+                "registration_authority"
+              ]
+            }
+          },
+          "date_and_place_of_birth": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "date_of_birth",
+                "place_of_birth"
+              ]
+            }
+          },
+          "customer_identification" : {
+            "type": "boolean"
+          },
+          "country_of_residence" : {
+            "type": "boolean"
+          },
+          "other_cdd_info" : {
+            "type": "string"
           }
         },
         "additionalProperties": false
