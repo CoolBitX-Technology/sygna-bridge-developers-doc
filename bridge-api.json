@@ -753,12 +753,48 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridgeApiResponse"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/bridgeApiResponse"
+                    },
+                    {
+                      "type": "object",
+                      "description": "Request has been successfully handled but with the special error",
+                      "properties": {
+                        "status": {
+                          "type": "integer"
+                        },
+                        "err_code": {
+                          "type": "string"
+                        },
+                        "err_message": {
+                          "type": "string"
+                        },
+                        "err_code_stacks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  ]
                 },
                 "examples": {
                   "response": {
                     "value": {
                       "status": "OK"
+                    }
+                  },
+                  "errorResponse": {
+                    "value": {
+                      "status": 200,
+                      "err_code": "010408",
+                      "err_message": "The counterparty VASP has not configured the callback endpoint for this feature, or their current version does not support sending enhanced CDD information.",
+                      "err_code_stacks": [
+                        "010226",
+                        "010408"
+                      ]
                     }
                   }
                 }
@@ -810,33 +846,6 @@
                         "010226",
                         "010207"
                       ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "The counterparty VASP has not configured the callback endpoint for this feature.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "integer"
-                    },
-                    "err_code": {
-                      "type": "string"
-                    },
-                    "err_message": {
-                      "type": "string"
-                    },
-                    "err_code_stacks": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
                     }
                   }
                 }
@@ -1438,7 +1447,7 @@
             "type": "string",
             "minLength": 1
           },
-          "vasp_server_status":{
+          "vasp_server_status": {
             "$ref": "#/components/schemas/vaspServerStatus"
           },
           "last_server_checked_at": {
@@ -1503,7 +1512,7 @@
             "type": "string",
             "minLength": 1
           },
-          "vasp_server_status":{
+          "vasp_server_status": {
             "$ref": "#/components/schemas/vaspServerStatus"
           },
           "last_server_checked_at": {
@@ -2066,13 +2075,13 @@
               ]
             }
           },
-          "customer_identification" : {
+          "customer_identification": {
             "type": "boolean"
           },
-          "country_of_residence" : {
+          "country_of_residence": {
             "type": "boolean"
           },
-          "other_cdd_info" : {
+          "other_cdd_info": {
             "type": "string"
           }
         },
@@ -2401,7 +2410,9 @@
           },
           "status": {
             "type": "string",
-            "enum": ["maintaining"]
+            "enum": [
+              "maintaining"
+            ]
           },
           "started_at": {
             "type": "number"
@@ -2413,7 +2424,11 @@
             "$ref": "#/components/schemas/bridgeSignature"
           }
         },
-        "required": ["vasp_code", "status", "signature"]
+        "required": [
+          "vasp_code",
+          "status",
+          "signature"
+        ]
       },
       "vaspServerStatus": {
         "type": "string",
@@ -2459,16 +2474,28 @@
               "type": "string"
             },
             "total": {
-              "type": ["number", "null"]
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "accepted": {
-              "type": ["number", "null"]
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "rejected": {
-              "type": ["number", "null"]
+              "type": [
+                "number",
+                "null"
+              ]
             },
             "null_count": {
-              "type": ["number", "null"]
+              "type": [
+                "number",
+                "null"
+              ]
             }
           }
         }
