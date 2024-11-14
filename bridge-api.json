@@ -2065,12 +2065,17 @@
           "request_cdd_data": {
             "$ref": "#/components/schemas/bridgeRequestCddData"
           },
+          "callback_type": {
+            "$ref": "#/components/schemas/bridgeCDDCallbackType"
+          },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
           "transfer_id",
+          "request_cdd_data",
+          "callback_type",
           "signature"
         ],
         "additionalProperties": false
@@ -2273,11 +2278,15 @@
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
+          },
+          "callback_type": {
+            "$ref": "#/components/schemas/bridgeCDDCallbackType"
           }
         },
         "required": [
           "transfer_id",
           "other_cdd_info",
+          "callback_type",
           "signature"
         ]
       },
@@ -2569,6 +2578,11 @@
             }
           }
         }
+      },
+      "bridgeCDDCallbackType": {
+        "title": "CDDCallbackType",
+        "type": "string",
+        "enum": ["REQUEST_CDD", "POST_CDD","RESPOND_CDD"]
       }
     }
   }
