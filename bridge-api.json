@@ -2581,6 +2581,7 @@
       },
       "bridgeCDDCallbackType": {
         "title": "CDDCallbackType",
+        "description": "'POST_CDD' is used when the originating VASP sends the permission request along with the Customer Due Diligence (CDD) information before the beneficiary VASP requests it; 'REQUEST_CDD' is used when the beneficiary VASP requests the CDD information from the originating VASP; 'RESPOND_CDD' is used when the originating VASP sends the CDD information after the beneficiary VASP requests it.",
         "type": "string",
         "enum": ["REQUEST_CDD", "POST_CDD","RESPOND_CDD"]
       }
