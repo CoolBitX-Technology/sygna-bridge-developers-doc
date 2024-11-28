@@ -134,6 +134,70 @@
         }
       }
     },
+    "/bridge/vasp/usage": {
+      "get": {
+        "description": "This API retrieves the total number of data transfer requests initiated within a specified time range. You can filter the results by providing a start_at and end_at timestamp. Please note that the timestamps is in UTC (UTC+0) and in milliseconds.",
+        "summary": "Bridge/VASPUsage",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/VASPUsage",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start_at",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "end_at",
+            "schema": {
+              "type": "number"
+            },
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "responses": {
+          "200": {
+            "description": "An object containing detail information of the total number of data transfer requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeVaspUsage"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "data": [
+                        {
+                          "vasp_code": "VASPJPJT4",
+                          "created_at": "2024-08-01",
+                          "total": "1",
+                          "accepted": "1",
+                          "rejected": "0",
+                          "null_count": "0"
+                        }
+                      ],
+                      "signature": "9fb61c13dc4f74a18413aca7179cd62ad22aa88ea67fe4e9ff6fa5e6ddf5d2706d175d8965c3eadf0c1370b52a2ab211697b520633c74d00d2bfb120e610dae6",
+                      "timestamp": 1584002280274
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bridge/vasp/beneficiary-endpoint-url": {
       "post": {
         "description": "This API allows requesting VASPs to update the self's callback URL programmatically, and at least one of the URLs must be specified in the request body.  \nThe requesting VASP needs to sign the body parameters with its private key to generate the signature in this API.",
@@ -555,7 +619,7 @@
             }
           },
           "403": {
-            "description": "Use an incorrenct private key to sign the API request body.",
+            "description": "Use an incorrect private key to sign the API request body.",
             "content": {
               "application/json": {
                 "schema": {
@@ -649,6 +713,138 @@
                       "err_code_stacks": [
                         "010202",
                         "010362"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bridge/transaction/cdd-request": {
+      "post": {
+        "description": "This API can be used to request enhanced Customer Due Diligence (CDD) information from the originating VASP.",
+        "summary": "Bridge/CDDRequest",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/CDDRequest",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCDDRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/bridgeApiResponse"
+                    },
+                    {
+                      "type": "object",
+                      "description": "Request has been successfully handled but with the special error",
+                      "properties": {
+                        "status": {
+                          "type": "integer"
+                        },
+                        "err_code": {
+                          "type": "string"
+                        },
+                        "err_message": {
+                          "type": "string"
+                        },
+                        "err_code_stacks": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  },
+                  "errorResponse": {
+                    "value": {
+                      "status": 200,
+                      "err_code": "010408",
+                      "err_message": "The counterparty VASP has not configured the callback endpoint for this feature, or their current version does not support sending enhanced CDD information.",
+                      "err_code_stacks": [
+                        "010226",
+                        "010408"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Use an incorrect private key to sign the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 403,
+                      "err_code": "010207",
+                      "err_message": "Verify beneficiary's data signature failed.",
+                      "err_code_stacks": [
+                        "010226",
+                        "010207"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 403,
+                      "err_code": "010207",
+                      "err_message": "Verify beneficiary's data signature failed.",
+                      "err_code_stacks": [
+                        "010226",
+                        "010207"
                       ]
                     }
                   }
@@ -813,6 +1009,56 @@
                   "response": {
                     "value": {
                       "retryItems": 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bridge/transaction/cdd": {
+      "post": {
+        "description": "This API is used to send the Customer Due Diligence (CDD) information either before or after it is requested by the beneficiary VASP.",
+        "summary": "Bridge/CDD",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/CDD",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCDD"
+              },
+              "example": {
+                "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
                     }
                   }
                 }
@@ -1251,7 +1497,7 @@
             "type": "string",
             "minLength": 1
           },
-          "vasp_server_status":{
+          "vasp_server_status": {
             "$ref": "#/components/schemas/vaspServerStatus"
           },
           "last_server_checked_at": {
@@ -1316,7 +1562,7 @@
             "type": "string",
             "minLength": 1
           },
-          "vasp_server_status":{
+          "vasp_server_status": {
             "$ref": "#/components/schemas/vaspServerStatus"
           },
           "last_server_checked_at": {
@@ -1429,6 +1675,12 @@
             "format": "url",
             "description": "#Example: https://<domain>/v1/callbacks/permission-request"
           },
+          "callback_cdd_url": {
+            "type": "string",
+            "format": "url",
+            "description": "This parameter is used when the originating VASP receives the request of enhanced Customer Due Diligence (CDD) information from the beneficiary VASP, or when the beneficiary VASP receives the reverted CDD information from the originating VASP.",
+            "example": "https://<domain>/v1/callbacks/cdd"
+          },
           "callback_txid_url": {
             "type": "string",
             "format": "url",
@@ -1534,6 +1786,11 @@
         "title": "private_info",
         "type": "string",
         "description": "ECIES encoded [Private Information](ref:private-information)"
+      },
+      "bridgeOtherCddInfo": {
+        "title": "other_cdd_info",
+        "type": "string",
+        "description": "ECIES encoded [Other CDD Information]"
       },
       "bridgeAddress": {
         "title": "addrs",
@@ -1771,6 +2028,9 @@
             "type": "boolean",
             "description": "True: Forced sending data transfers even counterparty VASP server status is NOT healthy.\nThe data transfer will still be successfully sent out by oVASP to the Sygna server.\n\nFalse: Do not force sending data transfers when the counterparty VASP server status is NOT healthy.\nThe data transfer will not be sent out. The oVASP needs to resend the data transfer manually."
           },
+          "other_cdd_info": {
+            "$ref": "#/components/schemas/bridgeOtherCddInfo"
+          },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
           }
@@ -1791,6 +2051,93 @@
           },
           "callback": {
             "$ref": "#/components/schemas/bridgeCallback"
+          }
+        },
+        "additionalProperties": false
+      },
+      "bridgeCDDRequest": {
+        "title": "CDD Request",
+        "type": "object",
+        "properties": {
+          "transfer_id": {
+            "$ref": "#/components/schemas/bridgeTransferID"
+          },
+          "request_cdd_data": {
+            "$ref": "#/components/schemas/bridgeRequestCddData"
+          },
+          "callback_type": {
+            "$ref": "#/components/schemas/bridgeCDDCallbackType"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "transfer_id",
+          "request_cdd_data",
+          "callback_type",
+          "signature"
+        ],
+        "additionalProperties": false
+      },
+      "bridgeRequestCddData": {
+        "title": "Request CDD Data",
+        "type": "object",
+        "properties": {
+          "geographic_address": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "address_line",
+                "address_type",
+                "building_name",
+                "building_number",
+                "country",
+                "country_sub_division",
+                "department",
+                "district_name",
+                "floor",
+                "post_box",
+                "post_code",
+                "room",
+                "street_name",
+                "sub_department",
+                "town_location_name",
+                "town_name"
+              ]
+            }
+          },
+          "national_identification": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "country_of_issue",
+                "national_identifier",
+                "national_identifier_type",
+                "registration_authority"
+              ]
+            }
+          },
+          "date_and_place_of_birth": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "date_of_birth",
+                "place_of_birth"
+              ]
+            }
+          },
+          "customer_identification": {
+            "type": "boolean"
+          },
+          "country_of_residence": {
+            "type": "boolean"
+          },
+          "other_cdd_info": {
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1916,6 +2263,30 @@
         "required": [
           "transfer_id",
           "txid",
+          "signature"
+        ]
+      },
+      "bridgeCDD": {
+        "title": "CDD",
+        "type": "object",
+        "properties": {
+          "transfer_id": {
+            "$ref": "#/components/schemas/bridgeTransferID"
+          },
+          "other_cdd_info": {
+            "type": "string"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          },
+          "callback_type": {
+            "$ref": "#/components/schemas/bridgeCDDCallbackType"
+          }
+        },
+        "required": [
+          "transfer_id",
+          "other_cdd_info",
+          "callback_type",
           "signature"
         ]
       },
@@ -2118,7 +2489,9 @@
           },
           "status": {
             "type": "string",
-            "enum": ["maintaining"]
+            "enum": [
+              "maintaining"
+            ]
           },
           "started_at": {
             "type": "number"
@@ -2130,7 +2503,11 @@
             "$ref": "#/components/schemas/bridgeSignature"
           }
         },
-        "required": ["vasp_code", "status", "signature"]
+        "required": [
+          "vasp_code",
+          "status",
+          "signature"
+        ]
       },
       "vaspServerStatus": {
         "type": "string",
@@ -2140,6 +2517,73 @@
           "unknown",
           "maintaining"
         ]
+      },
+      "bridgeVaspUsage": {
+        "title": "VaspUsage",
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/bridgeVaspUsageData"
+          },
+          "timestamp": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "data",
+          "timestamp",
+          "signature"
+        ],
+        "additionalProperties": false
+      },
+      "bridgeVaspUsageData": {
+        "title": "VaspUsageData",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "vasp_code": {
+              "type": "string"
+            },
+            "created_at": {
+              "type": "string"
+            },
+            "total": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "accepted": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "rejected": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "null_count": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "bridgeCDDCallbackType": {
+        "title": "CDDCallbackType",
+        "description": "'POST_CDD' is used when the originating VASP sends the permission request along with the Customer Due Diligence (CDD) information before the beneficiary VASP requests it; 'REQUEST_CDD' is used when the beneficiary VASP requests the CDD information from the originating VASP; 'RESPOND_CDD' is used when the originating VASP sends the CDD information after the beneficiary VASP requests it.",
+        "type": "string",
+        "enum": ["REQUEST_CDD", "POST_CDD","RESPOND_CDD"]
       }
     }
   }
