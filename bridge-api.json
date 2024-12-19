@@ -2671,6 +2671,9 @@
           "country_of_registration": {
             "type": "boolean"
           },
+          "name": {
+            "$ref": "#/components/schemas/legalPersonNameRule"
+          },
           "geographic_address": {
             "$ref": "#/components/schemas/geographicAddressRule"
           },
@@ -2690,6 +2693,9 @@
           "country_of_residence": {
             "type": "boolean"
           },
+          "name": {
+            "$ref": "#/components/schemas/naturalPersonNameRule"
+          },
           "geographic_address": {
             "$ref": "#/components/schemas/geographicAddressRule"
           },
@@ -2698,6 +2704,75 @@
           },
           "date_and_place_of_birth": {
             "$ref": "#/components/schemas/dateAndPlaceOfBirthRule"
+          }
+        }
+      },
+      "legalPersonNameRule": {
+        "title": "legalPersonNameRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name_identifier": {
+            "$ref": "#/components/schemas/legalPersonNameIdentifierRule"
+          },
+          "local_name_identifier": {
+            "$ref": "#/components/schemas/legalPersonNameIdentifierRule"
+          },
+          "phonetic_name_identifier": {
+            "$ref": "#/components/schemas/legalPersonNameIdentifierRule"
+          }
+        }
+      },
+      "legalPersonNameIdentifierRule": {
+        "title": "legalPersonNameIdentifierRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "legal_person_name": {
+            "type": "boolean"
+          },
+          "legal_person_name_identifier_type": {
+            "type": "boolean"
+          }
+        }
+      },
+      "naturalPersonNameRule": {
+        "title": "naturalPersonNameRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name_identifier": {
+            "$ref": "#/components/schemas/naturalPersonNameIdentifierRule"
+          },
+          "local_name_identifier": {
+            "$ref": "#/components/schemas/naturalPersonNameIdentifierRule"
+          },
+          "phonetic_name_identifier": {
+            "$ref": "#/components/schemas/naturalPersonNameIdentifierRule"
+          }
+        }
+      },
+      "naturalPersonNameIdentifierRule": {
+        "title": "naturalPersonNameIdentifierRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "primary_identifier": {
+            "type": "boolean"
+          },
+          "secondary_identifier": {
+            "type": "boolean"
+          },
+          "name_identifier_type": {
+            "type": "boolean"
           }
         }
       },
