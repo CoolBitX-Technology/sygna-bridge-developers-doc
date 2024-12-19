@@ -243,6 +243,51 @@
         }
       }
     },
+    "/bridge/vasp/beneficiary-checking-rule": {
+      "post": {
+        "description": "This API allows the beneficiary VASP to add or manage rules for validating data transfers.",
+        "summary": "Bridge/VASP/BeneficiaryCheckingRule",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/BeneficiaryCheckingRule",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/beneficiaryCheckingRule"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bridge/vasp/server-status": {
       "post": {
         "description": "This API is used to declare that the VASP’s server is currently in maintenance.",
@@ -1710,6 +1755,25 @@
           "signature"
         ]
       },
+      "beneficiaryCheckingRule": {
+        "title": "BeneficiaryCheckingRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "legal_person": {
+            "$ref": "#/components/schemas/legalPersonRule"
+          },
+          "natural_person": {
+            "$ref": "#/components/schemas/naturalPersonRule"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "signature"
+        ]
+      },
       "bridgeCurrencyItem": {
         "title": "CurrencyItem",
         "type": "object",
@@ -2584,6 +2648,146 @@
         "description": "'POST_CDD' is used when the originating VASP sends the permission request along with the Customer Due Diligence (CDD) information before the beneficiary VASP requests it; 'REQUEST_CDD' is used when the beneficiary VASP requests the CDD information from the originating VASP; 'RESPOND_CDD' is used when the originating VASP sends the CDD information after the beneficiary VASP requests it.",
         "type": "string",
         "enum": ["REQUEST_CDD", "POST_CDD","RESPOND_CDD"]
+      },
+      "legalPersonRule": {
+        "title": "legalPersonRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "customer_identification": {
+            "type": "boolean"
+          },
+          "country_of_registration": {
+            "type": "boolean"
+          },
+          "geographic_address": {
+            "$ref": "#/components/schemas/geographicAddressRule"
+          },
+          "national_identification": {
+            "$ref": "#/components/schemas/nationalIdentificationRule"
+          }
+        }
+      },
+      "naturalPersonRule": {
+        "title": "naturalPersonRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "customer_identification": {
+            "type": "boolean"
+          },
+          "country_of_residence": {
+            "type": "boolean"
+          },
+          "geographic_address": {
+            "$ref": "#/components/schemas/geographicAddressRule"
+          },
+          "national_identification": {
+            "$ref": "#/components/schemas/nationalIdentificationRule"
+          },
+          "date_and_place_of_birth": {
+            "$ref": "#/components/schemas/dateAndPlaceOfBirthRule"
+          }
+        }
+      },
+      "geographicAddressRule": {
+        "title": "geographicAddressRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "address_line": {
+            "type": "boolean"
+          },
+          "address_type": {
+            "type": "boolean"
+          },
+          "building_name": {
+            "type": "boolean"
+          },
+          "building_number": {
+            "type": "boolean"
+          },
+          "country": {
+            "type": "boolean"
+          },
+          "country_sub_division": {
+            "type": "boolean"
+          },
+          "department": {
+            "type": "boolean"
+          },
+          "district_name": {
+            "type": "boolean"
+          },
+          "floor": {
+            "type": "boolean"
+          },
+          "post_box": {
+            "type": "boolean"
+          },
+          "post_code": {
+            "type": "boolean"
+          },
+          "room": {
+            "type": "boolean"
+          },
+          "street_name": {
+            "type": "boolean"
+          },
+          "sub_department": {
+            "type": "boolean"
+          },
+          "town_location_name": {
+            "type": "boolean"
+          },
+          "town_name": {
+            "type": "boolean"
+          }
+        }
+      },
+      "nationalIdentificationRule": {
+        "title": "nationalIdentificationRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "country_of_issue": {
+            "type": "boolean"
+          },
+          "national_identifier": {
+            "type": "boolean"
+          },
+          "national_identifier_type": {
+            "type": "boolean"
+          },
+          "registration_authority": {
+            "type": "boolean"
+          }
+        }
+      },
+      "dateAndPlaceOfBirthRule": {
+        "title": "dateAndPlaceOfBirthRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "date_of_birth": {
+            "type": "boolean"
+          },
+          "place_of_birth": {
+            "type": "boolean"
+          }
+        }
       }
     }
   }
