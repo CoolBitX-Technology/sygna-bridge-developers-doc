@@ -1643,6 +1643,17 @@
                 "type": "string"
               }
             }
+          },
+          "beneficiary_checking_rule": {
+            "type": "object",
+            "properties": {
+              "legal_person": {
+                "$ref": "#/components/schemas/legalPersonRule"
+              },
+              "natural_person": {
+                "$ref": "#/components/schemas/naturalPersonRule"
+              }
+            }
           }
         },
         "required": [
