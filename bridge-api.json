@@ -1113,6 +1113,55 @@
         }
       }
     },
+    "/bridge/transaction/cancel": {
+      "post": {
+        "description": "The originating VASP can cancel the permission request through this API.",
+        "summary": "Bridge/Cancel",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/Cancel",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCancel"
+              },
+              "example": {
+                "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bridge/wallet-address-filter": {
       "post": {
         "description": "The Sygna Wallet Address Filter (WAF) API is a key feature that enables you to determine whether a specific wallet address belongs to a VASP or an unhosted wallet based on the Sygna server's directory and your selected blockchain analytics (KYT) vendor. If the wallet address is associated with an un-hosted wallet, your KYT vendor will return a risk score for the address. If you have not yet collaborated with a blockchain analytics vendor, please contact services@sygna.io",
@@ -1752,6 +1801,11 @@
             "format": "url",
             "description": "#Example: https://<domain>/v1/vasp-server-status"
           },
+          "callback_cancel_url": {
+            "type": "string",
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/callbacks/cancel"
+          },
           "callback_host_url": {
             "type": "string",
             "format": "url",
@@ -2362,6 +2416,22 @@
           "transfer_id",
           "other_cdd_info",
           "callback_type",
+          "signature"
+        ]
+      },
+      "bridgeCancel": {
+        "title": "Cancel",
+        "type": "object",
+        "properties": {
+          "transfer_id": {
+            "$ref": "#/components/schemas/bridgeTransferID"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "transfer_id",
           "signature"
         ]
       },
