@@ -2128,32 +2128,35 @@
       },
       "bridgeAddress": {
         "title": "addrs",
-        "type": "object",
-        "properties": {
-          "address": {
-            "type": "string",
-            "minLength": 1
-          },
-          "addr_extra_info": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": {
-                "oneOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "number"
-                  }
-                ]
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1
+            },
+            "addr_extra_info": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
               }
             }
-          }
-        },
-        "required": [
-          "address"
-        ]
+          },
+          "required": [
+            "address"
+          ]
+        }
       },
       "bridgeOriginatorVasp": {
         "title": "originator_vasp",
