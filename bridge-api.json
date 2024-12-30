@@ -520,6 +520,211 @@
         }
       }
     },
+    "/bridge/transaction/address-validation": {
+      "post": {
+        "description": "Originator VASP can check if the beneficiary VASP owns the wallet address before originator personal information is sent.",
+        "summary": "Bridge/AddressValidation",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/AddressValidation",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeAddressValidation"
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "vasp_code": "SYGNTWTP",
+                    "currency_id": "sygna:0x80000000",
+                    "addrs": [
+                      {
+                        "address": "ooo"
+                      },
+                      {
+                        "address": "xxx"
+                      }
+                    ],
+                    "signature": "..."
+                  }
+                },
+                "Example 2": {
+                  "value": {
+                    "vasp_code": "SYGNTWTP",
+                    "currency_id": "sygna:0x80000000",
+                    "addrs": [
+                      {
+                        "address": "ooo",
+                        "addr_extra_info": [
+                          {
+                            "tag": "123"
+                          }
+                        ]
+                      },
+                      {
+                        "address": "ooo",
+                        "addr_extra_info": [
+                          {
+                            "tag": "456"
+                          }
+                        ]
+                      }
+                    ],
+                    "signature": "..."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addressValidationRes"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "vasp_code": "VASPUSNY2",
+                      "address": [
+                        "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                      ],
+                      "is_valid": true,
+                      "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  },
+                  "Eaxmple 2": {
+                    "value": {
+                      "vasp_code": "VASPUSNY2",
+                      "address": [
+                        "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                      ],
+                      "is_valid": false,
+                      "reason_message": "incorrect currency_id",
+                      "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Use an incorrect private key to sign the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 403,
+                      "err_code": "010205",
+                      "err_message": "Verify originator's data signature failed.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010205"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 403,
+                      "err_code": "010205",
+                      "err_message": "Verify originator's data signature failed.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010205"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input a \"Not supported currency_id\" in the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 404,
+                      "err_code": "010362",
+                      "err_message": "The currency_id(sygna:0x???) is not supported by Sygna Bridge.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010362"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 404,
+                      "err_code": "010362",
+                      "err_message": "The currency_id(sygna:0x???) is not supported by Sygna Bridge.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010362"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bridge/transaction/permission-request": {
       "post": {
         "description": "The first step of the permission request flow. Should be called by the originator VASP to inform Sygna Bridge about the creation of a compliant transaction.\n\n\n![](https://i.imgur.com/zI8TwAL.png)  \nThe originator VASP should use its private key to construct a signature that includes the encrypted  private_info and other body parameters.  \nThe originator VASP uses its private key and the callback_url to construct the signature in callback.",
@@ -1869,22 +2074,35 @@
       },
       "bridgeAddress": {
         "title": "addrs",
-        "type": "object",
-        "properties": {
-          "address": {
-            "type": "string",
-            "minLength": 1
-          },
-          "addr_extra_info": {
-            "type": "array",
-            "items": {
-              "type": "object"
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1
+            },
+            "addr_extra_info": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              }
             }
-          }
-        },
-        "required": [
-          "address"
-        ]
+          },
+          "required": [
+            "address"
+          ]
+        }
       },
       "bridgeOriginatorVasp": {
         "title": "originator_vasp",
@@ -2097,7 +2315,7 @@
           },
           "need_validate_addr": {
             "type": "boolean",
-            "description": "need validate beneficary address"
+            "description": "need validate beneficiary address"
           },
           "forced_sending_when_VASP_is_not_healthy": {
             "type": "boolean",
@@ -2116,6 +2334,31 @@
           "data_dt",
           "signature"
         ]
+      },
+      "bridgeAddressValidation": {
+        "title": "AddressValidation",
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "type": "string"
+          },
+          "currency_id": {
+            "type": "string"
+          },
+          "addrs": {
+            "$ref": "#/components/schemas/bridgeAddress"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "vasp_code",
+          "currency_id",
+          "addrs",
+          "signature"
+        ],
+        "additionalProperties": false
       },
       "bridgePermissionRequest": {
         "title": "PermissionRequest",
@@ -2391,7 +2634,7 @@
       },
       "addressValidationRes": {
         "title": "AddressValidationRes",
-        "description": "This response (\"is_valid\") means the beneficairy address is valid.",
+        "description": "This response (\"is_valid\") means the beneficiary address is valid.",
         "type": "object",
         "properties": {
           "vasp_code": {
@@ -2405,6 +2648,9 @@
           },
           "is_valid": {
             "type": "boolean"
+          },
+          "reason_message": {
+            "type": "string"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -2658,7 +2904,11 @@
         "title": "CDDCallbackType",
         "description": "'POST_CDD' is used when the originating VASP sends the permission request along with the Customer Due Diligence (CDD) information before the beneficiary VASP requests it; 'REQUEST_CDD' is used when the beneficiary VASP requests the CDD information from the originating VASP; 'RESPOND_CDD' is used when the originating VASP sends the CDD information after the beneficiary VASP requests it.",
         "type": "string",
-        "enum": ["REQUEST_CDD", "POST_CDD","RESPOND_CDD"]
+        "enum": [
+          "REQUEST_CDD",
+          "POST_CDD",
+          "RESPOND_CDD"
+        ]
       },
       "legalPersonRule": {
         "title": "legalPersonRule",
