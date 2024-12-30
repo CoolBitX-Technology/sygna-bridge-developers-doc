@@ -2074,35 +2074,32 @@
       },
       "bridgeAddress": {
         "title": "addrs",
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "address": {
-              "type": "string",
-              "minLength": 1
-            },
-            "addr_extra_info": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": {
-                  "oneOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    }
-                  ]
-                }
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "minLength": 1
+          },
+          "addr_extra_info": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
               }
             }
-          },
-          "required": [
-            "address"
-          ]
-        }
+          }
+        },
+        "required": [
+          "address"
+        ]
       },
       "bridgeOriginatorVasp": {
         "title": "originator_vasp",
@@ -2346,7 +2343,11 @@
             "type": "string"
           },
           "addrs": {
-            "$ref": "#/components/schemas/bridgeAddress"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/bridgeAddress"
+            },
+            "minItems": 1
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
