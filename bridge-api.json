@@ -2343,7 +2343,11 @@
             "type": "string"
           },
           "addrs": {
-            "$ref": "#/components/schemas/bridgeAddress"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/bridgeAddress"
+            },
+            "minItems": 1
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
