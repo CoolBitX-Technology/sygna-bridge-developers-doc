@@ -2553,28 +2553,20 @@
               "type": "string"
             },
             "total": {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "number",
+              "nullable": true
             },
             "accepted": {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "number",
+              "nullable": true
             },
             "rejected": {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "number",
+              "nullable": true
             },
             "null_count": {
-              "type": [
-                "number",
-                "null"
-              ]
+              "type": "number",
+              "nullable": true
             }
           }
         }
