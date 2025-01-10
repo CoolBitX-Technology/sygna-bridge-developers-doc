@@ -2946,20 +2946,16 @@
               "type": "string"
             },
             "total": {
-              "type": "number",
-              "nullable": true
+              "type": "number"
             },
             "accepted": {
-              "type": "number",
-              "nullable": true
+              "type": "number"
             },
             "rejected": {
-              "type": "number",
-              "nullable": true
+              "type": "number"
             },
             "null_count": {
-              "type": "number",
-              "nullable": true
+              "type": "number"
             }
           }
         }
