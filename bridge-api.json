@@ -1288,10 +1288,23 @@
               "schema": {
                 "$ref": "#/components/schemas/bridgeCDD"
               },
-              "example": {
-                "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
-                "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
-                "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+              "examples": {
+                "Send CDD information before requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "POST_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                },
+                "Send CDD information after requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "RESPOND_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                }
               }
             }
           },
@@ -1742,6 +1755,98 @@
           }
         }
       }
+    },
+    "/vasp/transaction/cdd": {
+      "post": {
+        "description": "This API may differ from your position as originating or beneficiary VASP:\n\n(1) When you are an originaing VASP, you need to configure the callbacks of this API (which callback_type is \"REQUEST_CDD\") in order to receive the CDD request from the beneficiary VASP.\n\n![](https://i.imgur.com/Hr0gG7C.png)\n\n(2) When you are a beneficiary VASP, you need to configure the callbacks of this API (which callback_type is \"POST_CDD\") in order to obtain further required private information, which the originating VASP proactively sends right after the data transfer.\n\n![](https://i.imgur.com/iabITEy.png)\n\n(3) When you are a beneficiary VASP, you need to configure the callbacks of this API (which callback_type is \"RESPOND_CDD\") in order to obtain the follow-up enhanced CDD information from the originating VASP.\n\n![](https://i.imgur.com/4cN7Kap.png)",
+        "summary": "VASP/CDD",
+        "tags": [
+          "VASP API"
+        ],
+        "operationId": "VASP/CDD",
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "transfer_id": {
+                    "$ref": "#/components/schemas/bridgeTransferID"
+                  },
+                  "callback_type": {
+                    "$ref": "#/components/schemas/bridgeCDDCallbackType"
+                  },
+                  "request_cdd_data": {
+                    "$ref": "#/components/schemas/bridgeRequestCddData"
+                  },
+                  "other_cdd_info": {
+                    "type": "string",
+                    "description": "ECIES encrypted [Other CDD Information] or Free-form text according to callback_type"
+                  },
+                  "signature": {
+                    "$ref": "#/components/schemas/bridgeSignature"
+                  }
+                },
+                "required": [
+                  "transfer_id",
+                  "callback_type",
+                  "signature"
+                ]
+              },
+              "examples": {
+                "Originating VASP sends CDD information before requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "POST_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                },
+                "Beneficiary VASP requests enhanced CDD information from the originating VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "request_cdd_data": {
+                      "geographic_address": ["town_name"],
+                      "date_and_place_of_birth": ["place_of_birth"]
+                    },
+                    "callback_type": "REQUEST_CDD",
+                    "other_cdd_info": "[Passport Number]",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                },
+                "Originating VASP sends CDD information after requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "RESPOND_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "tags": [
@@ -2119,12 +2224,12 @@
       "bridgePrivateInfo": {
         "title": "private_info",
         "type": "string",
-        "description": "ECIES encoded [Private Information](ref:private-information)"
+        "description": "ECIES encrypted [Private Information](ref:private-information)"
       },
       "bridgeOtherCddInfo": {
         "title": "other_cdd_info",
         "type": "string",
-        "description": "ECIES encoded [Other CDD Information]"
+        "description": "ECIES encrypted [Other CDD Information]"
       },
       "bridgeAddress": {
         "title": "addrs",
@@ -2648,13 +2753,13 @@
             "$ref": "#/components/schemas/bridgeTransferID"
           },
           "other_cdd_info": {
-            "type": "string"
-          },
-          "signature": {
-            "$ref": "#/components/schemas/bridgeSignature"
+            "$ref": "#/components/schemas/bridgeOtherCddInfo"
           },
           "callback_type": {
             "$ref": "#/components/schemas/bridgeCDDCallbackType"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
