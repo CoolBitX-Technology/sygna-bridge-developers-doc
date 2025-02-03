@@ -1565,13 +1565,28 @@
                 "schema": {
                   "$ref": "#/components/schemas/addressValidationRes"
                 },
-                "example": {
-                  "vasp_code": "VASPUSNY2",
-                  "address": [
-                    "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
-                  ],
-                  "is_valid": true,
-                  "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                "examples": {
+                  "is_valid true": {
+                    "value": {
+                      "vasp_code": "VASPUSNY2",
+                      "address": [
+                        "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                      ],
+                      "is_valid": true,
+                      "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  },
+                  "is_valid false": {
+                    "value": {
+                        "vasp_code": "VASPUSNY2",
+                        "address": [
+                          "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                        ],
+                        "is_valid": false,
+                        "reason_message": "invalid wallet address",
+                        "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  }
                 }
               }
             }
@@ -2871,7 +2886,8 @@
             "type": "boolean"
           },
           "reason_message": {
-            "type": "string"
+            "type": "string",
+            "description": "Reason for validation failure when is_valid is false."
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
