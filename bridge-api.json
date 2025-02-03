@@ -1847,6 +1847,50 @@
           }
         }
       }
+    },
+    "/beneficiary/transaction/cancel": {
+      "post": {
+        "description": "The beneficiary VASP needs to configure the callbacks in order to receive the cancel request launched by the originating VASP.",
+        "summary": "Beneficiary/Cancel",
+        "tags": [
+          "VASP API"
+        ],
+        "operationId": "Beneficiary/Cancel",
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCancel"
+              },
+              "example": {
+                "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "tags": [
