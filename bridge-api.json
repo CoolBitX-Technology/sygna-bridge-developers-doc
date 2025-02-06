@@ -243,6 +243,51 @@
         }
       }
     },
+    "/bridge/vasp/beneficiary-checking-rule": {
+      "post": {
+        "description": "This API allows the beneficiary VASP to add or manage rules for validating data transfers.",
+        "summary": "Bridge/VASP/BeneficiaryCheckingRule",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/BeneficiaryCheckingRule",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/beneficiaryCheckingRule"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bridge/vasp/server-status": {
       "post": {
         "description": "This API is used to declare that the VASP’s server is currently in maintenance.",
@@ -466,6 +511,211 @@
                         "transfer_to_originator_time": "2019-09-20T02:08:25.276Z"
                       },
                       "signature": "64ed8fd76816bd32ca033764ac0b1ce6b7987a83714c2abd2ef8ee06628fd1c73e3a8dabe13b344f2701f7d32388270a07b138bd83b5350d75f80d94614d8281"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bridge/transaction/address-validation": {
+      "post": {
+        "description": "Originator VASP can check if the beneficiary VASP owns the wallet address before originator personal information is sent.",
+        "summary": "Bridge/AddressValidation",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/AddressValidation",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeAddressValidation"
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "vasp_code": "SYGNTWTP",
+                    "currency_id": "sygna:0x80000000",
+                    "addrs": [
+                      {
+                        "address": "ooo"
+                      },
+                      {
+                        "address": "xxx"
+                      }
+                    ],
+                    "signature": "..."
+                  }
+                },
+                "Example 2": {
+                  "value": {
+                    "vasp_code": "SYGNTWTP",
+                    "currency_id": "sygna:0x80000000",
+                    "addrs": [
+                      {
+                        "address": "ooo",
+                        "addr_extra_info": [
+                          {
+                            "tag": "123"
+                          }
+                        ]
+                      },
+                      {
+                        "address": "ooo",
+                        "addr_extra_info": [
+                          {
+                            "tag": "456"
+                          }
+                        ]
+                      }
+                    ],
+                    "signature": "..."
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addressValidationRes"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "vasp_code": "VASPUSNY2",
+                      "address": [
+                        "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                      ],
+                      "is_valid": true,
+                      "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  },
+                  "Eaxmple 2": {
+                    "value": {
+                      "vasp_code": "VASPUSNY2",
+                      "address": [
+                        "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                      ],
+                      "is_valid": false,
+                      "reason_message": "incorrect currency_id",
+                      "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Use an incorrect private key to sign the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 403,
+                      "err_code": "010205",
+                      "err_message": "Verify originator's data signature failed.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010205"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 403,
+                      "err_code": "010205",
+                      "err_message": "Verify originator's data signature failed.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010205"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Input a \"Not supported currency_id\" in the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 404,
+                      "err_code": "010362",
+                      "err_message": "The currency_id(sygna:0x???) is not supported by Sygna Bridge.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010362"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 404,
+                      "err_code": "010362",
+                      "err_message": "The currency_id(sygna:0x???) is not supported by Sygna Bridge.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010362"
+                      ]
                     }
                   }
                 }
@@ -1038,9 +1288,71 @@
               "schema": {
                 "$ref": "#/components/schemas/bridgeCDD"
               },
+              "examples": {
+                "Send CDD information before requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "POST_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                },
+                "Send CDD information after requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "RESPOND_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bridge/transaction/cancel": {
+      "post": {
+        "description": "The originating VASP can cancel the permission request through this API.",
+        "summary": "Bridge/Cancel",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/Cancel",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCancel"
+              },
               "example": {
                 "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
-                "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
                 "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
               }
             }
@@ -1253,13 +1565,28 @@
                 "schema": {
                   "$ref": "#/components/schemas/addressValidationRes"
                 },
-                "example": {
-                  "vasp_code": "VASPUSNY2",
-                  "address": [
-                    "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
-                  ],
-                  "is_valid": true,
-                  "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                "examples": {
+                  "is_valid true": {
+                    "value": {
+                      "vasp_code": "VASPUSNY2",
+                      "address": [
+                        "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                      ],
+                      "is_valid": true,
+                      "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  },
+                  "is_valid false": {
+                    "value": {
+                        "vasp_code": "VASPUSNY2",
+                        "address": [
+                          "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                        ],
+                        "is_valid": false,
+                        "reason_message": "invalid wallet address",
+                        "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  }
                 }
               }
             }
@@ -1443,6 +1770,142 @@
           }
         }
       }
+    },
+    "/vasp/transaction/cdd": {
+      "post": {
+        "description": "This API may differ from your position as originating or beneficiary VASP:\n\n(1) When you are an originaing VASP, you need to configure the callbacks of this API (which callback_type is \"REQUEST_CDD\") in order to receive the CDD request from the beneficiary VASP.\n\n![](https://i.imgur.com/Hr0gG7C.png)\n\n(2) When you are a beneficiary VASP, you need to configure the callbacks of this API (which callback_type is \"POST_CDD\") in order to obtain further required private information, which the originating VASP proactively sends right after the data transfer.\n\n![](https://i.imgur.com/iabITEy.png)\n\n(3) When you are a beneficiary VASP, you need to configure the callbacks of this API (which callback_type is \"RESPOND_CDD\") in order to obtain the follow-up enhanced CDD information from the originating VASP.\n\n![](https://i.imgur.com/4cN7Kap.png)",
+        "summary": "VASP/CDD",
+        "tags": [
+          "VASP API"
+        ],
+        "operationId": "VASP/CDD",
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "transfer_id": {
+                    "$ref": "#/components/schemas/bridgeTransferID"
+                  },
+                  "callback_type": {
+                    "$ref": "#/components/schemas/bridgeCDDCallbackType"
+                  },
+                  "request_cdd_data": {
+                    "$ref": "#/components/schemas/bridgeRequestCddData"
+                  },
+                  "other_cdd_info": {
+                    "type": "string",
+                    "description": "ECIES encrypted [Other CDD Information] or Free-form text according to callback_type"
+                  },
+                  "signature": {
+                    "$ref": "#/components/schemas/bridgeSignature"
+                  }
+                },
+                "required": [
+                  "transfer_id",
+                  "callback_type",
+                  "signature"
+                ]
+              },
+              "examples": {
+                "Originating VASP sends CDD information before requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "POST_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                },
+                "Beneficiary VASP requests enhanced CDD information from the originating VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "request_cdd_data": {
+                      "geographic_address": ["town_name"],
+                      "date_and_place_of_birth": ["place_of_birth"]
+                    },
+                    "callback_type": "REQUEST_CDD",
+                    "other_cdd_info": "[Passport Number]",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                },
+                "Originating VASP sends CDD information after requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "RESPOND_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/beneficiary/transaction/cancel": {
+      "post": {
+        "description": "The beneficiary VASP needs to configure the callbacks in order to receive the cancel request launched by the originating VASP.",
+        "summary": "Beneficiary/Cancel",
+        "tags": [
+          "VASP API"
+        ],
+        "operationId": "Beneficiary/Cancel",
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCancel"
+              },
+              "example": {
+                "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "tags": [
@@ -1598,6 +2061,17 @@
                 "type": "string"
               }
             }
+          },
+          "beneficiary_checking_rule": {
+            "type": "object",
+            "properties": {
+              "legal_person": {
+                "$ref": "#/components/schemas/legalPersonRule"
+              },
+              "natural_person": {
+                "$ref": "#/components/schemas/naturalPersonRule"
+              }
+            }
           }
         },
         "required": [
@@ -1696,6 +2170,11 @@
             "format": "url",
             "description": "#Example: https://<domain>/v1/vasp-server-status"
           },
+          "callback_cancel_url": {
+            "type": "string",
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/callbacks/cancel"
+          },
           "callback_host_url": {
             "type": "string",
             "format": "url",
@@ -1707,6 +2186,25 @@
         },
         "required": [
           "vasp_code",
+          "signature"
+        ]
+      },
+      "beneficiaryCheckingRule": {
+        "title": "BeneficiaryCheckingRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "legal_person": {
+            "$ref": "#/components/schemas/legalPersonRule"
+          },
+          "natural_person": {
+            "$ref": "#/components/schemas/naturalPersonRule"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
           "signature"
         ]
       },
@@ -1785,12 +2283,12 @@
       "bridgePrivateInfo": {
         "title": "private_info",
         "type": "string",
-        "description": "ECIES encoded [Private Information](ref:private-information)"
+        "description": "ECIES encrypted [Private Information](ref:private-information)"
       },
       "bridgeOtherCddInfo": {
         "title": "other_cdd_info",
         "type": "string",
-        "description": "ECIES encoded [Other CDD Information]"
+        "description": "ECIES encrypted [Other CDD Information]"
       },
       "bridgeAddress": {
         "title": "addrs",
@@ -1803,7 +2301,17 @@
           "addr_extra_info": {
             "type": "array",
             "items": {
-              "type": "object"
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              }
             }
           }
         },
@@ -1927,6 +2435,7 @@
             "enum": [
               "ACCEPTED",
               "REJECTED",
+              "CANCELED",
               null
             ]
           },
@@ -2022,7 +2531,7 @@
           },
           "need_validate_addr": {
             "type": "boolean",
-            "description": "need validate beneficary address"
+            "description": "need validate beneficiary address"
           },
           "forced_sending_when_VASP_is_not_healthy": {
             "type": "boolean",
@@ -2041,6 +2550,35 @@
           "data_dt",
           "signature"
         ]
+      },
+      "bridgeAddressValidation": {
+        "title": "AddressValidation",
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "type": "string"
+          },
+          "currency_id": {
+            "type": "string"
+          },
+          "addrs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/bridgeAddress"
+            },
+            "minItems": 1
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "vasp_code",
+          "currency_id",
+          "addrs",
+          "signature"
+        ],
+        "additionalProperties": false
       },
       "bridgePermissionRequest": {
         "title": "PermissionRequest",
@@ -2274,19 +2812,35 @@
             "$ref": "#/components/schemas/bridgeTransferID"
           },
           "other_cdd_info": {
-            "type": "string"
-          },
-          "signature": {
-            "$ref": "#/components/schemas/bridgeSignature"
+            "$ref": "#/components/schemas/bridgeOtherCddInfo"
           },
           "callback_type": {
             "$ref": "#/components/schemas/bridgeCDDCallbackType"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
           "transfer_id",
           "other_cdd_info",
           "callback_type",
+          "signature"
+        ]
+      },
+      "bridgeCancel": {
+        "title": "Cancel",
+        "type": "object",
+        "properties": {
+          "transfer_id": {
+            "$ref": "#/components/schemas/bridgeTransferID"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
+          }
+        },
+        "required": [
+          "transfer_id",
           "signature"
         ]
       },
@@ -2316,7 +2870,7 @@
       },
       "addressValidationRes": {
         "title": "AddressValidationRes",
-        "description": "This response (\"is_valid\") means the beneficairy address is valid.",
+        "description": "This response (\"is_valid\") means the beneficiary address is valid.",
         "type": "object",
         "properties": {
           "vasp_code": {
@@ -2330,6 +2884,10 @@
           },
           "is_valid": {
             "type": "boolean"
+          },
+          "reason_message": {
+            "type": "string",
+            "description": "Reason for validation failure when is_valid is false."
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -2575,7 +3133,226 @@
         "title": "CDDCallbackType",
         "description": "'POST_CDD' is used when the originating VASP sends the permission request along with the Customer Due Diligence (CDD) information before the beneficiary VASP requests it; 'REQUEST_CDD' is used when the beneficiary VASP requests the CDD information from the originating VASP; 'RESPOND_CDD' is used when the originating VASP sends the CDD information after the beneficiary VASP requests it.",
         "type": "string",
-        "enum": ["REQUEST_CDD", "POST_CDD","RESPOND_CDD"]
+        "enum": [
+          "REQUEST_CDD",
+          "POST_CDD",
+          "RESPOND_CDD"
+        ]
+      },
+      "legalPersonRule": {
+        "title": "legalPersonRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "customer_identification": {
+            "type": "boolean"
+          },
+          "country_of_registration": {
+            "type": "boolean"
+          },
+          "name": {
+            "$ref": "#/components/schemas/legalPersonNameRule"
+          },
+          "geographic_address": {
+            "$ref": "#/components/schemas/geographicAddressRule"
+          },
+          "national_identification": {
+            "$ref": "#/components/schemas/nationalIdentificationRule"
+          }
+        }
+      },
+      "naturalPersonRule": {
+        "title": "naturalPersonRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "customer_identification": {
+            "type": "boolean"
+          },
+          "country_of_residence": {
+            "type": "boolean"
+          },
+          "name": {
+            "$ref": "#/components/schemas/naturalPersonNameRule"
+          },
+          "geographic_address": {
+            "$ref": "#/components/schemas/geographicAddressRule"
+          },
+          "national_identification": {
+            "$ref": "#/components/schemas/nationalIdentificationRule"
+          },
+          "date_and_place_of_birth": {
+            "$ref": "#/components/schemas/dateAndPlaceOfBirthRule"
+          }
+        }
+      },
+      "legalPersonNameRule": {
+        "title": "legalPersonNameRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name_identifier": {
+            "$ref": "#/components/schemas/legalPersonNameIdentifierRule"
+          },
+          "local_name_identifier": {
+            "$ref": "#/components/schemas/legalPersonNameIdentifierRule"
+          },
+          "phonetic_name_identifier": {
+            "$ref": "#/components/schemas/legalPersonNameIdentifierRule"
+          }
+        }
+      },
+      "legalPersonNameIdentifierRule": {
+        "title": "legalPersonNameIdentifierRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "legal_person_name": {
+            "type": "boolean"
+          },
+          "legal_person_name_identifier_type": {
+            "type": "boolean"
+          }
+        }
+      },
+      "naturalPersonNameRule": {
+        "title": "naturalPersonNameRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name_identifier": {
+            "$ref": "#/components/schemas/naturalPersonNameIdentifierRule"
+          },
+          "local_name_identifier": {
+            "$ref": "#/components/schemas/naturalPersonNameIdentifierRule"
+          },
+          "phonetic_name_identifier": {
+            "$ref": "#/components/schemas/naturalPersonNameIdentifierRule"
+          }
+        }
+      },
+      "naturalPersonNameIdentifierRule": {
+        "title": "naturalPersonNameIdentifierRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "primary_identifier": {
+            "type": "boolean"
+          },
+          "secondary_identifier": {
+            "type": "boolean"
+          },
+          "name_identifier_type": {
+            "type": "boolean"
+          }
+        }
+      },
+      "geographicAddressRule": {
+        "title": "geographicAddressRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "address_line": {
+            "type": "boolean"
+          },
+          "address_type": {
+            "type": "boolean"
+          },
+          "building_name": {
+            "type": "boolean"
+          },
+          "building_number": {
+            "type": "boolean"
+          },
+          "country": {
+            "type": "boolean"
+          },
+          "country_sub_division": {
+            "type": "boolean"
+          },
+          "department": {
+            "type": "boolean"
+          },
+          "district_name": {
+            "type": "boolean"
+          },
+          "floor": {
+            "type": "boolean"
+          },
+          "post_box": {
+            "type": "boolean"
+          },
+          "post_code": {
+            "type": "boolean"
+          },
+          "room": {
+            "type": "boolean"
+          },
+          "street_name": {
+            "type": "boolean"
+          },
+          "sub_department": {
+            "type": "boolean"
+          },
+          "town_location_name": {
+            "type": "boolean"
+          },
+          "town_name": {
+            "type": "boolean"
+          }
+        }
+      },
+      "nationalIdentificationRule": {
+        "title": "nationalIdentificationRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "country_of_issue": {
+            "type": "boolean"
+          },
+          "national_identifier": {
+            "type": "boolean"
+          },
+          "national_identifier_type": {
+            "type": "boolean"
+          },
+          "registration_authority": {
+            "type": "boolean"
+          }
+        }
+      },
+      "dateAndPlaceOfBirthRule": {
+        "title": "dateAndPlaceOfBirthRule",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
+          "date_of_birth": {
+            "type": "boolean"
+          },
+          "place_of_birth": {
+            "type": "boolean"
+          }
+        }
       }
     }
   }
