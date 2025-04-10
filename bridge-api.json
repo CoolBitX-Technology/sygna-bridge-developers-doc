@@ -3191,6 +3191,10 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
           "name_identifier": {
             "$ref": "#/components/schemas/legalPersonNameIdentifierRule"
           },
@@ -3224,6 +3228,10 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
           "name_identifier": {
             "$ref": "#/components/schemas/naturalPersonNameIdentifierRule"
           },
