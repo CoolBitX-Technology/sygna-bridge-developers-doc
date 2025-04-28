@@ -1288,10 +1288,23 @@
               "schema": {
                 "$ref": "#/components/schemas/bridgeCDD"
               },
-              "example": {
-                "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
-                "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
-                "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+              "examples": {
+                "Send CDD information before requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "POST_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                },
+                "Send CDD information after requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "RESPOND_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                }
               }
             }
           },
@@ -1552,13 +1565,28 @@
                 "schema": {
                   "$ref": "#/components/schemas/addressValidationRes"
                 },
-                "example": {
-                  "vasp_code": "VASPUSNY2",
-                  "address": [
-                    "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
-                  ],
-                  "is_valid": true,
-                  "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                "examples": {
+                  "is_valid true": {
+                    "value": {
+                      "vasp_code": "VASPUSNY2",
+                      "address": [
+                        "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                      ],
+                      "is_valid": true,
+                      "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  },
+                  "is_valid false": {
+                    "value": {
+                        "vasp_code": "VASPUSNY2",
+                        "address": [
+                          "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                        ],
+                        "is_valid": false,
+                        "reason_message": "invalid wallet address",
+                        "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                    }
+                  }
                 }
               }
             }
@@ -1717,6 +1745,142 @@
                 "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
                 "permission_status": "ACCEPTED",
                 "signature": "309f14db5fe4c33e9ebd770d110a89a93c1c9f68b8e1aac18097c1078ffb5a292f4132501ab1e3bf1f9ee3c3f8a9fd9c3f94ac403a5370eb38a6cdece8d7d1cc"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vasp/transaction/cdd": {
+      "post": {
+        "description": "This API may differ from your position as originating or beneficiary VASP:\n\n(1) When you are an originaing VASP, you need to configure the callbacks of this API (which callback_type is \"REQUEST_CDD\") in order to receive the CDD request from the beneficiary VASP.\n\n![](https://i.imgur.com/Hr0gG7C.png)\n\n(2) When you are a beneficiary VASP, you need to configure the callbacks of this API (which callback_type is \"POST_CDD\") in order to obtain further required private information, which the originating VASP proactively sends right after the data transfer.\n\n![](https://i.imgur.com/iabITEy.png)\n\n(3) When you are a beneficiary VASP, you need to configure the callbacks of this API (which callback_type is \"RESPOND_CDD\") in order to obtain the follow-up enhanced CDD information from the originating VASP.\n\n![](https://i.imgur.com/4cN7Kap.png)",
+        "summary": "VASP/CDD",
+        "tags": [
+          "VASP API"
+        ],
+        "operationId": "VASP/CDD",
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "transfer_id": {
+                    "$ref": "#/components/schemas/bridgeTransferID"
+                  },
+                  "callback_type": {
+                    "$ref": "#/components/schemas/bridgeCDDCallbackType"
+                  },
+                  "request_cdd_data": {
+                    "$ref": "#/components/schemas/bridgeRequestCddData"
+                  },
+                  "other_cdd_info": {
+                    "type": "string",
+                    "description": "ECIES encrypted [Other CDD Information] or Free-form text according to callback_type"
+                  },
+                  "signature": {
+                    "$ref": "#/components/schemas/bridgeSignature"
+                  }
+                },
+                "required": [
+                  "transfer_id",
+                  "callback_type",
+                  "signature"
+                ]
+              },
+              "examples": {
+                "Originating VASP sends CDD information before requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "POST_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                },
+                "Beneficiary VASP requests enhanced CDD information from the originating VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "request_cdd_data": {
+                      "geographic_address": ["town_name"],
+                      "date_and_place_of_birth": ["place_of_birth"]
+                    },
+                    "callback_type": "REQUEST_CDD",
+                    "other_cdd_info": "[Passport Number]",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                },
+                "Originating VASP sends CDD information after requested by the beneficiary VASP": {
+                  "value": {
+                    "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                    "other_cdd_info": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+                    "callback_type": "RESPOND_CDD",
+                    "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/beneficiary/transaction/cancel": {
+      "post": {
+        "description": "The beneficiary VASP needs to configure the callbacks in order to receive the cancel request launched by the originating VASP.",
+        "summary": "Beneficiary/Cancel",
+        "tags": [
+          "VASP API"
+        ],
+        "operationId": "Beneficiary/Cancel",
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCancel"
+              },
+              "example": {
+                "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+                "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
               }
             }
           },
@@ -2041,6 +2205,8 @@
           }
         },
         "required": [
+          "legal_person",
+          "natural_person",
           "signature"
         ]
       },
@@ -2119,12 +2285,12 @@
       "bridgePrivateInfo": {
         "title": "private_info",
         "type": "string",
-        "description": "ECIES encoded [Private Information](ref:private-information)"
+        "description": "ECIES encrypted [Private Information](ref:private-information)"
       },
       "bridgeOtherCddInfo": {
         "title": "other_cdd_info",
         "type": "string",
-        "description": "ECIES encoded [Other CDD Information]"
+        "description": "ECIES encrypted [Other CDD Information]"
       },
       "bridgeAddress": {
         "title": "addrs",
@@ -2648,13 +2814,13 @@
             "$ref": "#/components/schemas/bridgeTransferID"
           },
           "other_cdd_info": {
-            "type": "string"
-          },
-          "signature": {
-            "$ref": "#/components/schemas/bridgeSignature"
+            "$ref": "#/components/schemas/bridgeOtherCddInfo"
           },
           "callback_type": {
             "$ref": "#/components/schemas/bridgeCDDCallbackType"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
@@ -2722,7 +2888,8 @@
             "type": "boolean"
           },
           "reason_message": {
-            "type": "string"
+            "type": "string",
+            "description": "Reason for validation failure when is_valid is false."
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -3026,6 +3193,10 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
           "name_identifier": {
             "$ref": "#/components/schemas/legalPersonNameIdentifierRule"
           },
@@ -3059,6 +3230,10 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "match_all": {
+            "description": "The match_all field defines the validation logic for the specified fields within an object. If it is true, all specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. If it is false, at least one of the specified fields in the object must match the corresponding fields in bVASP's database for the validation to succeed. Default is false.",
+            "type": "boolean"
+          },
           "name_identifier": {
             "$ref": "#/components/schemas/naturalPersonNameIdentifierRule"
           },
