@@ -1979,6 +1979,11 @@
                 "type": "number"
               }
             }
+          },
+          "alliance": {
+            "title": "alliance",
+            "description": "This parameter specifies which Travel Rule protocol the VASP actually belongs to. Please note that the VASPs on the list are all interoperable with Sygna_Bridge, you could transfer the Travel Rule request to these VASPs via \"Sygna_Bridge\" protocol.",
+            "type": "string"
           }
         },
         "required": [
@@ -2072,6 +2077,11 @@
                 "$ref": "#/components/schemas/naturalPersonRule"
               }
             }
+          },
+          "alliance": {
+            "title": "alliance",
+            "description": "This parameter specifies which Travel Rule protocol the VASP actually belongs to. Please note that the VASPs on the list are all interoperable with Sygna_Bridge, you could transfer the Travel Rule request to these VASPs via \"Sygna_Bridge\" protocol.",
+            "type": "string"
           }
         },
         "required": [
