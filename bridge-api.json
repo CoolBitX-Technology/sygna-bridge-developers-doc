@@ -1488,7 +1488,7 @@
     },
     "/beneficiary/transaction/address-validation": {
       "post": {
-        "description": "Originator VASP can check if the beneficiary VASP owns the wallet address before originator personal information is sent. You can activate this function In the Bridge/PermissionRequest API with need_validate_addr parameter to truth.  \nSygna Bridge uses its private key to construct the signature that includes the body parameters.",
+        "description": "To enhance the security of the transaction process, Originator VASP may check whether the beneficiary VASP owns the wallet address before disclosing the originator's personal information. This feature can be activated in the Bridge/PermissionRequest API by setting the \"need_validate_addr\" parameter to \"true\". Sygna Bridge will then use its private key to generate a signature that includes the body parameters.\n\nIf a Sygna VASP includes asset extra information in a data transfer, the Sygna Beneficiary VASP will receive the wallet address validation attempt along with the asset extra info. However, it is still permissible for a Sygna Bridge VASP to exclude asset extra info when making a call to the API <POST /permission-request> with the \"need_validate_addr\" parameter set to \"true\".",
         "summary": "Beneficiary/AddressValidation",
         "tags": [
           "VASP API"
@@ -1523,7 +1523,11 @@
                     "type": "array",
                     "items": {
                       "type": "object",
-                      "properties": {}
+                      "properties": {
+                        "tag": {
+                          "type": "string"
+                        }
+                      }
                     }
                   },
                   "signature": {
@@ -1533,16 +1537,26 @@
                 "x-examples": {
                   "Example 1": {
                     "vasp_code": "KLEETWBG",
-                    "currency_id": "sygna:0x80000000",
-                    "currency_symbol": "BTC",
-                    "currency_name": "Bitcoin",
+                    "currency_id": "sygna:0x80000090",
+                    "currency_symbol": "XRP",
+                    "currency_name": "XRP",
                     "address": [
-                      "1LrxsRd7zNuxPJcL5rttnoeJFy1y4AffYY"
+                      "rhhh49pFH96roGyuC4E5P4CHaNjS1k8gzM",
+                      "rsgi7ENscrVaXC44JE2m94XzKQrmAVX2gV"
                     ],
                     "addr_extra_info": [
-                      []
+                      [
+                        {
+                          "tag": "0111111"
+                        }
+                      ],
+                      [
+                        {
+                          "tag": "0222222"
+                        }
+                      ]
                     ],
-                    "signature": "0f54d97b5027aa0bb6c4120a248a3529a3e21bbef9c41b904dc7c8d2e751b6674e41c61caaed0bcec02e7306820d69f4906230ca51f9626571dade81ca23aed4"
+                    "signature": "b2b22541f382d6627807e010e0d8a263029b839fe15491f8537eb3b9c159b670772f0e64527f950146b511b2a23ff5c6ad46123caf38830ce6fab4608bb456b5"
                   }
                 }
               },
