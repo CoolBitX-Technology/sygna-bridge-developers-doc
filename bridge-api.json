@@ -2074,10 +2074,38 @@
             "type": "object",
             "properties": {
               "legal_person": {
+                "description": "TBC",
                 "$ref": "#/components/schemas/legalPersonRule"
               },
               "natural_person": {
+                "description": "TBC",
                 "$ref": "#/components/schemas/naturalPersonRule"
+              },
+              "self": {
+                "type": "object",
+                "description": "TBC",
+                "additionalProperties": false,
+                "properties": {
+                  "legal_person": {
+                    "$ref": "#/components/schemas/legalPersonRule"
+                  },
+                  "natural_person": {
+                    "$ref": "#/components/schemas/naturalPersonRule"
+                  }
+                }
+              },
+              "third_party": {
+                "type": "object",
+                "description": "TBC",
+                "additionalProperties": false,
+                "properties": {
+                  "legal_person": {
+                    "$ref": "#/components/schemas/legalPersonRule"
+                  },
+                  "natural_person": {
+                    "$ref": "#/components/schemas/naturalPersonRule"
+                  }
+                }
               }
             }
           },
@@ -2211,10 +2239,38 @@
         "additionalProperties": false,
         "properties": {
           "legal_person": {
+            "description": "TBC",
             "$ref": "#/components/schemas/legalPersonRule"
           },
           "natural_person": {
+            "description": "TBC",
             "$ref": "#/components/schemas/naturalPersonRule"
+          },
+          "self": {
+            "type": "object",
+            "description": "TBC",
+            "additionalProperties": false,
+            "properties": {
+              "legal_person": {
+                "$ref": "#/components/schemas/legalPersonRule"
+              },
+              "natural_person": {
+                "$ref": "#/components/schemas/naturalPersonRule"
+              }
+            }
+          },
+          "third_party": {
+            "type": "object",
+            "description": "TBC",
+            "additionalProperties": false,
+            "properties": {
+              "legal_person": {
+                "$ref": "#/components/schemas/legalPersonRule"
+              },
+              "natural_person": {
+                "$ref": "#/components/schemas/naturalPersonRule"
+              }
+            }
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -2537,6 +2593,10 @@
         "properties": {
           "private_info": {
             "$ref": "#/components/schemas/bridgePrivateInfo"
+          },
+          "is_self_transfer": {
+            "type": "boolean",
+            "description": "TBC"
           },
           "transaction": {
             "$ref": "#/components/schemas/bridgeTransaction"
