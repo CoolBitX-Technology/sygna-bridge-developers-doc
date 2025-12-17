@@ -2078,6 +2078,19 @@
               },
               "natural_person": {
                 "$ref": "#/components/schemas/naturalPersonRule"
+              },
+              "self_transfer": {
+                "type": "object",
+                "description": "It is used when the originator sends the data transfer to himself/herself/itself.",
+                "additionalProperties": false,
+                "properties": {
+                  "legal_person": {
+                    "$ref": "#/components/schemas/legalPersonRule"
+                  },
+                  "natural_person": {
+                    "$ref": "#/components/schemas/naturalPersonRule"
+                  }
+                }
               }
             }
           },
@@ -2215,6 +2228,19 @@
           },
           "natural_person": {
             "$ref": "#/components/schemas/naturalPersonRule"
+          },
+          "self_transfer": {
+            "type": "object",
+            "description": "It is used when the originator sends the data transfer to himself/herself/itself.",
+            "additionalProperties": false,
+            "properties": {
+              "legal_person": {
+                "$ref": "#/components/schemas/legalPersonRule"
+              },
+              "natural_person": {
+                "$ref": "#/components/schemas/naturalPersonRule"
+              }
+            }
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -2537,6 +2563,10 @@
         "properties": {
           "private_info": {
             "$ref": "#/components/schemas/bridgePrivateInfo"
+          },
+          "is_self_transfer": {
+            "type": "boolean",
+            "description": "This param is used to declare whether the permission request is going to be sent to another wallet address of the same person."
           },
           "transaction": {
             "$ref": "#/components/schemas/bridgeTransaction"
