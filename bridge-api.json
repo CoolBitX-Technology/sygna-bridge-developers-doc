@@ -2277,8 +2277,6 @@
           }
         },
         "required": [
-          "legal_person",
-          "natural_person",
           "signature"
         ]
       },
