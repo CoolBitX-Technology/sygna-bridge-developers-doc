@@ -2093,19 +2093,6 @@
                     "$ref": "#/components/schemas/naturalPersonRule"
                   }
                 }
-              },
-              "third_party": {
-                "type": "object",
-                "description": "TBC",
-                "additionalProperties": false,
-                "properties": {
-                  "legal_person": {
-                    "$ref": "#/components/schemas/legalPersonRule"
-                  },
-                  "natural_person": {
-                    "$ref": "#/components/schemas/naturalPersonRule"
-                  }
-                }
               }
             }
           },
@@ -2259,24 +2246,13 @@
               }
             }
           },
-          "third_party": {
-            "type": "object",
-            "description": "TBC",
-            "additionalProperties": false,
-            "properties": {
-              "legal_person": {
-                "$ref": "#/components/schemas/legalPersonRule"
-              },
-              "natural_person": {
-                "$ref": "#/components/schemas/naturalPersonRule"
-              }
-            }
-          },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
+          "legal_person",
+          "natural_person",
           "signature"
         ]
       },
