@@ -2074,16 +2074,14 @@
             "type": "object",
             "properties": {
               "legal_person": {
-                "description": "TBC",
                 "$ref": "#/components/schemas/legalPersonRule"
               },
               "natural_person": {
-                "description": "TBC",
                 "$ref": "#/components/schemas/naturalPersonRule"
               },
-              "self": {
+              "self_transfer": {
                 "type": "object",
-                "description": "TBC",
+                "description": "It is used when the originator sends the data transfer to himself/herself/itself.",
                 "additionalProperties": false,
                 "properties": {
                   "legal_person": {
@@ -2226,16 +2224,14 @@
         "additionalProperties": false,
         "properties": {
           "legal_person": {
-            "description": "TBC",
             "$ref": "#/components/schemas/legalPersonRule"
           },
           "natural_person": {
-            "description": "TBC",
             "$ref": "#/components/schemas/naturalPersonRule"
           },
-          "self": {
+          "self_transfer": {
             "type": "object",
-            "description": "TBC",
+            "description": "It is used when the originator sends the data transfer to himself/herself/itself.",
             "additionalProperties": false,
             "properties": {
               "legal_person": {
@@ -2570,7 +2566,7 @@
           },
           "is_self_transfer": {
             "type": "boolean",
-            "description": "TBC"
+            "description": "This param is used to declare whether the permission request is going to be sent to another wallet address of the same person."
           },
           "transaction": {
             "$ref": "#/components/schemas/bridgeTransaction"
