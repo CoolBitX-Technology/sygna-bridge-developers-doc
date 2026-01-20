@@ -383,6 +383,16 @@
               "type": "string",
               "example": "Bitcoin"
             }
+          },
+          {
+            "in": "query",
+            "name": "version",
+            "description": "crypto currency list version 3",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "v3"
+            }
           }
         ],
         "responses": {
@@ -2417,6 +2427,12 @@
             "type": "string",
             "minLength": 1
           },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "network": {
+            "type": "string"
+          },
           "amount": {
             "type": "string",
             "minLength": 1
@@ -2609,6 +2625,12 @@
           "currency_id": {
             "type": "string"
           },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "network": {
+            "type": "string"
+          },
           "addrs": {
             "type": "array",
             "items": {
@@ -2622,7 +2644,6 @@
         },
         "required": [
           "vasp_code",
-          "currency_id",
           "addrs",
           "signature"
         ],
@@ -2968,6 +2989,12 @@
           "currency_id": {
             "type": "string"
           },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "network": {
+            "type": "string"
+          },
           "addrs": {
             "type": "array",
             "items": {
@@ -2984,7 +3011,6 @@
           }
         },
         "required": [
-          "currency_id",
           "addrs"
         ]
       },
