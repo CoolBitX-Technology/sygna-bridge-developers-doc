@@ -2319,6 +2319,42 @@
         ],
         "additionalProperties": false
       },
+      "bridgeCurrencyV3Item": {
+        "title": "CurrencyV3Item",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "platforms": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "token_address": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "token_address"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "symbol",
+          "name",
+          "platforms"
+        ],
+        "additionalProperties": false
+      },
       "bridgeSupportedCoins": {
         "title": "supported_coins",
         "type": "object",
@@ -2326,7 +2362,14 @@
           "supported_coins": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/bridgeCurrencyItem"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/bridgeCurrencyItem"
+                },
+                {
+                  "$ref": "#/components/schemas/bridgeCurrencyV3Item"
+                }
+              ]
             }
           }
         },
