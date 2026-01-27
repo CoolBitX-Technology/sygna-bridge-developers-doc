@@ -383,6 +383,16 @@
               "type": "string",
               "example": "Bitcoin"
             }
+          },
+          {
+            "in": "query",
+            "name": "version",
+            "description": "crypto currency list version 3",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "v3"
+            }
           }
         ],
         "responses": {
@@ -2309,6 +2319,43 @@
         ],
         "additionalProperties": false
       },
+      "bridgeCurrencyV3Item": {
+        "title": "CurrencyV3Item",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "platforms": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "token_address": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "token_address"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "symbol",
+          "name",
+          "platforms"
+        ],
+        "additionalProperties": false
+      },
       "bridgeSupportedCoins": {
         "title": "supported_coins",
         "type": "object",
@@ -2316,7 +2363,14 @@
           "supported_coins": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/bridgeCurrencyItem"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/bridgeCurrencyItem"
+                },
+                {
+                  "$ref": "#/components/schemas/bridgeCurrencyV3Item"
+                }
+              ]
             }
           }
         },
@@ -2416,6 +2470,12 @@
           "currency_id": {
             "type": "string",
             "minLength": 1
+          },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "network": {
+            "type": "string"
           },
           "amount": {
             "type": "string",
@@ -2609,6 +2669,12 @@
           "currency_id": {
             "type": "string"
           },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "network": {
+            "type": "string"
+          },
           "addrs": {
             "type": "array",
             "items": {
@@ -2622,7 +2688,6 @@
         },
         "required": [
           "vasp_code",
-          "currency_id",
           "addrs",
           "signature"
         ],
@@ -2968,6 +3033,12 @@
           "currency_id": {
             "type": "string"
           },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "network": {
+            "type": "string"
+          },
           "addrs": {
             "type": "array",
             "items": {
@@ -2984,7 +3055,6 @@
           }
         },
         "required": [
-          "currency_id",
           "addrs"
         ]
       },
