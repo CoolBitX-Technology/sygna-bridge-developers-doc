@@ -383,6 +383,16 @@
               "type": "string",
               "example": "Bitcoin"
             }
+          },
+          {
+            "in": "query",
+            "name": "version",
+            "description": "crypto currency list version 3",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "v3"
+            }
           }
         ],
         "responses": {
@@ -420,6 +430,103 @@
                             "symbol": "ETH",
                             "token_address": "0xde1e0ae6101b46520cf66fdc0b1059c5cc3d106c"
                           }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/bridge/transaction/currency-mapping": {
+      "get": {
+        "summary": "Bridge/CurrencyMapping",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "bridge/currency-mapping",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "Retrieve the mapping of legacy currency_id to new currency_id_v3 and platform.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "currency_id",
+            "description": "Legacy currency uuid",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "sygna:0x8000003c"
+            }
+          },
+          {
+            "in": "query",
+            "name": "currency_id_v3",
+            "description": "New currency uuid",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "4c6ff21c-d772-4ca6-9036-6b5fe32c12f2"
+            }
+          },
+          {
+            "in": "query",
+            "name": "platform",
+            "description": "Platform in currency v3",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "ethereum"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of results",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "10"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "Offset the results",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "5"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "get mapping of legacy currency to new currency and platform successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeCurrencyMapping"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "items": [
+                        {
+                          "currency_id": "sygna:0x8000003c",
+                          "currency_id_v3": "4c6ff21c-d772-4ca6-9036-6b5fe32c12f2",
+                          "platform": "ethereum",
+                          "symbol": "ETH",
+                          "name": "Ethereum"
                         }
                       ]
                     }
@@ -1578,13 +1685,13 @@
                   },
                   "is_valid false": {
                     "value": {
-                        "vasp_code": "VASPUSNY2",
-                        "address": [
-                          "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
-                        ],
-                        "is_valid": false,
-                        "reason_message": "invalid wallet address",
-                        "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                      "vasp_code": "VASPUSNY2",
+                      "address": [
+                        "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                      ],
+                      "is_valid": false,
+                      "reason_message": "invalid wallet address",
+                      "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
                     }
                   }
                 }
@@ -1821,8 +1928,12 @@
                   "value": {
                     "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
                     "request_cdd_data": {
-                      "geographic_address": ["town_name"],
-                      "date_and_place_of_birth": ["place_of_birth"]
+                      "geographic_address": [
+                        "town_name"
+                      ],
+                      "date_and_place_of_birth": [
+                        "place_of_birth"
+                      ]
                     },
                     "callback_type": "REQUEST_CDD",
                     "other_cdd_info": "[Passport Number]",
@@ -2214,7 +2325,6 @@
           }
         },
         "required": [
-          "vasp_code",
           "signature"
         ]
       },
@@ -2309,6 +2419,43 @@
         ],
         "additionalProperties": false
       },
+      "bridgeCurrencyV3Item": {
+        "title": "CurrencyV3Item",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "platforms": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "token_address": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "token_address"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "symbol",
+          "name",
+          "platforms"
+        ],
+        "additionalProperties": false
+      },
       "bridgeSupportedCoins": {
         "title": "supported_coins",
         "type": "object",
@@ -2316,12 +2463,63 @@
           "supported_coins": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/bridgeCurrencyItem"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/bridgeCurrencyItem"
+                },
+                {
+                  "$ref": "#/components/schemas/bridgeCurrencyV3Item"
+                }
+              ]
             }
           }
         },
         "required": [
           "supported_coins"
+        ]
+      },
+      "bridgeCurrencyMappingItem": {
+        "title": "CurrencyMappingItem",
+        "type": "object",
+        "properties": {
+          "currency_id": {
+            "type": "string"
+          },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "currency_id",
+          "currency_id_v3",
+          "platform",
+          "symbol",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "bridgeCurrencyMapping": {
+        "title": "CurrencyMapping",
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/bridgeCurrencyMappingItem"
+            }
+          }
+        },
+        "required": [
+          "items"
         ]
       },
       "bridgePrivateInfo": {
@@ -2416,6 +2614,12 @@
           "currency_id": {
             "type": "string",
             "minLength": 1
+          },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string"
           },
           "amount": {
             "type": "string",
@@ -2609,6 +2813,12 @@
           "currency_id": {
             "type": "string"
           },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string"
+          },
           "addrs": {
             "type": "array",
             "items": {
@@ -2622,7 +2832,6 @@
         },
         "required": [
           "vasp_code",
-          "currency_id",
           "addrs",
           "signature"
         ],
@@ -2968,6 +3177,12 @@
           "currency_id": {
             "type": "string"
           },
+          "currency_id_v3": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string"
+          },
           "addrs": {
             "type": "array",
             "items": {
@@ -2984,7 +3199,6 @@
           }
         },
         "required": [
-          "currency_id",
           "addrs"
         ]
       },
